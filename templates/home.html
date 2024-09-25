@@ -1,18 +1,55 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Home - Indoor Plant Store{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
-<p>Hi {{ user.username }}!</p>
-<p><a href="{% url 'password_change' %}">Password Change</a></p>
-<form action="{% url 'logout' %}" method="post">
-  {% csrf_token %}
-  <button type="submit">Log Out</button>
-</form>
-{% else %}
-<p>You are not logged in</p>
-<p><a href="{% url 'password_reset' %}">Password Reset</a></p>
-<p><a href="{% url 'login' %}">Log In</a></p>
-{% endif %}
+<div class="container mt-5">
+    <div class="card shadow-sm p-4">
+        <div class="text-center mb-4">
+            <h1 class="display-4">Welcome to the Indoor Plant Store!</h1>
+        </div>
+
+        {% if user.is_authenticated %}
+        <div class="alert alert-success text-center">
+            <p class="lead">Hi, {{ user.username }}! 🌱</p>
+        </div>
+
+        <!-- Role selection form -->
+        <form action="{% url 'home' %}" method="post" class="mb-4">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="role">Please select your role:</label>
+                <select id="role" name="role" class="form-control">
+                    <option value="buyer" {% if request.session.role == "buyer" %}selected{% endif %}>Buyer</option>
+                    <option value="seller" {% if request.session.role == "seller" %}selected{% endif %}>Seller</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+        {% if request.session.role == "buyer" %}
+        <!-- Content for Buyer -->
+        <div class="alert alert-info text-center">
+            <p>Welcome, Buyer! Here are the plants available for purchase:</p>
+            <!-- You can add a list of products here -->
+        </div>
+        {% elif request.session.role == "seller" %}
+        <!-- Content for Seller -->
+        <div class="alert alert-info text-center">
+            <p>Welcome, Seller! Here you can manage your plants for sale:</p>
+            <!-- You can add seller-specific actions here -->
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="alert alert-warning text-center">
+            <p class="lead">You are not logged in.</p>
+        </div>
+        <div class="text-center">
+            <a href="{% url 'password_reset' %}" class="btn btn-outline-primary mb-2">Reset Password</a>
+            <a href="{% url 'login' %}" class="btn btn-success">Log In</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
