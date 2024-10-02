@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "accounts", # new app
+    "accounts",  # Use this simple form for now
+    "indoor_plant",
 ]
 
 MIDDLEWARE = [
@@ -113,10 +114,12 @@ USE_I18N = True
 USE_TZ = True
 
 
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -128,4 +131,10 @@ LOGOUT_REDIRECT_URL = "home"  # redirect to home after logout
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
+# Media files (User-uploaded files)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 

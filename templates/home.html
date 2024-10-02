@@ -1,55 +1,35 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}Home - Indoor Plant Store{% endblock %}
+{% block title %}Welcome to Indoor Plant Store{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="card shadow-sm p-4">
-        <div class="text-center mb-4">
-            <h1 class="display-4">Welcome to the Indoor Plant Store!</h1>
-        </div>
+<div class="jumbotron text-center">
+    <h1 class="display-4">Welcome to Indoor Plant Store</h1>
+    <p class="lead">Discover the perfect plants to bring life to your indoor spaces.</p>
+    <hr class="my-4">
+    <p>Explore our wide selection of indoor plants, care guides, and accessories.</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'home' %}" role="button">Shop Now</a>
+</div>
 
-        {% if user.is_authenticated %}
-        <div class="alert alert-success text-center">
-            <p class="lead">Hi, {{ user.username }}! 🌱</p>
+<div class="mt-5">
+    <h2 class="text-center mb-4">Why Choose Indoor Plant Store?</h2>
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <i class="fas fa-leaf fa-3x mb-3 text-success"></i>
+            <h4>Wide Selection</h4>
+            <p>Choose from hundreds of carefully curated indoor plants.</p>
         </div>
-
-        <!-- Role selection form -->
-        <form action="{% url 'home' %}" method="post" class="mb-4">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="role">Please select your role:</label>
-                <select id="role" name="role" class="form-control">
-                    <option value="buyer" {% if request.session.role == "buyer" %}selected{% endif %}>Buyer</option>
-                    <option value="seller" {% if request.session.role == "seller" %}selected{% endif %}>Seller</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-
-        {% if request.session.role == "buyer" %}
-        <!-- Content for Buyer -->
-        <div class="alert alert-info text-center">
-            <p>Welcome, Buyer! Here are the plants available for purchase:</p>
-            <!-- You can add a list of products here -->
+        <div class="col-md-4 text-center">
+            <i class="fas fa-truck fa-3x mb-3 text-success"></i>
+            <h4>Fast & Safe Delivery</h4>
+            <p>We ensure your plants arrive fresh and undamaged.</p>
         </div>
-        {% elif request.session.role == "seller" %}
-        <!-- Content for Seller -->
-        <div class="alert alert-info text-center">
-            <p>Welcome, Seller! Here you can manage your plants for sale:</p>
-            <!-- You can add seller-specific actions here -->
+        <div class="col-md-4 text-center">
+            <i class="fas fa-hands-helping fa-3x mb-3 text-success"></i>
+            <h4>Expert Care Advice</h4>
+            <p>Get personalized tips to help your plants thrive.</p>
         </div>
-        {% endif %}
-
-        {% else %}
-        <div class="alert alert-warning text-center">
-            <p class="lead">You are not logged in.</p>
-        </div>
-        <div class="text-center">
-            <a href="{% url 'password_reset' %}" class="btn btn-outline-primary mb-2">Reset Password</a>
-            <a href="{% url 'login' %}" class="btn btn-success">Log In</a>
-        </div>
-        {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard - Indoor Plant Store{% endblock %}
+
+{% block content %}
+<h1 class="mb-4"><a href="{% url 'admin_dashboard' %}" class="btn btn-primary">Admin Dashboard</a></h1>
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">User Management</h5>
+                <p class="card-text">Manage user accounts and roles.</p>
+                <a href="#" class="btn btn-primary mb-2">View All Users</a>
+                <a href="#" class="btn btn-success">Create New User</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Product Management</h5>
+                <p class="card-text">Oversee all product listings.</p>
+                <a href="{% url 'product_list' %}" class="btn btn-primary mb-2">View All Products</a>
+                <a href="{% url 'create_product' %}" class="btn btn-success">Add New Product</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Site Settings</h5>
+                <p class="card-text">Configure global site settings.</p>
+                <a href="{% url 'general_settings' %}" class="btn btn-primary mb-2">General Settings</a>
+                <a href="{% url 'payment_settings' %}" class="btn btn-info">Payment Settings</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add a section for quick statistics -->
+<div class="row mt-4">
+    <div class="col-md-3 mb-4">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <h5 class="card-title">Total Users</h5>
+                <p class="card-text display-4">{{ total_users }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h5 class="card-title">Total Products</h5>
+                <p class="card-text display-4">{{ total_products }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <h5 class="card-title">Total Orders</h5>
+                <p class="card-text display-4">{{ total_orders }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <h5 class="card-title">Revenue</h5>
+                <p class="card-text display-4">${{ total_revenue }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
