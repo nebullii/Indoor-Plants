@@ -1,0 +1,42 @@
+footer {
+    background-color: #f8f9fa;
+}
+
+footer h5 {
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+footer .social-icons a {
+    font-size: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+footer .social-icons a:hover {
+    color: #007bff !important;
+}
+
+footer ul li {
+    margin-bottom: 0.5rem;
+}
+
+footer ul li a {
+    transition: color 0.3s ease;
+}
+
+footer ul li a:hover {
+    color: #007bff !important;
+    text-decoration: none;
+}
+
+footer .btn-outline-secondary {
+    color: #007bff;
+    border-color: #007bff;
+}
+
+footer .btn-outline-secondary:hover {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}

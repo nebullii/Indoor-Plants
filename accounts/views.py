@@ -6,9 +6,10 @@ from .forms import CustomUserCreationForm
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib.auth import get_user_model
 
+
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
-    success_url = reverse_lazy("login")  # Fixed typo: removed space
+    success_url = reverse_lazy("home")  # Fixed typo: removed space
     template_name = "registration/signup.html"
 
 @login_required
@@ -20,7 +21,7 @@ def seller_dashboard(request):
     return render(request, 'seller_dashboard.html')
 
 def is_admin(user):
-    return user.is_authenticated and user.is_admin()   
+    return user.is_authenticated and (user.is_staff or user.is_superuser) 
 
 @user_passes_test(is_admin)
 def admin_dashboard(request):

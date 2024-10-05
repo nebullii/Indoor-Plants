@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "accounts",  # Use this simple form for now
     "indoor_plant",
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -137,4 +138,8 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 # Media files (User-uploaded files)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+LOGOUT_REDIRECT_URL = 'home'
+
+
 
