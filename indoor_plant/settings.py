@@ -28,7 +28,11 @@ SECRET_KEY = "django-insecure-b+a8ww6yovgjwwsvq4&lihc=&ch3^mimfq22cxrix_&wx=2dn2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["indoor-plant-405v.onrender.com"]
+ALLOWED_HOSTS = [
+    "indoor-plant-405v.onrender.com",
+    "localhost",
+    "127.0.0.1:8000",
+    ]
 
 
 # Application definition
@@ -43,6 +47,7 @@ INSTALLED_APPS = [
     "accounts",  # Use this simple form for now
     "indoor_plant",
     'widget_tweaks',
+    'products',
 ]
 
 MIDDLEWARE = [
@@ -85,7 +90,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "mysql",
         "USER": "root",
-        "PASSWORD": "nevi@usa",
+        "PASSWORD": "",
         "HOST": "localhost",
         "PORT": "3306",
     }
