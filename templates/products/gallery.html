@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Product Gallery{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/custom.css' %}">  <!-- Ensure this path is correct -->
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Indoor Plant Gallery</h2>
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-4 text-center mb-4">
+            <div class="card shadow-sm border-light">
+                <img src="https://via.placeholder.com/300x200" class="card-img-top rounded" alt="{{ product.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">{{ product.description }}</p>
+                    <p class="card-text text-success font-weight-bold">${{ product.price }}</p>
+                    <a href="#" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p class="text-center text-muted">No products available.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
