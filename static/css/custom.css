@@ -1,0 +1,139 @@
+/* Centering the footer */
+.footer {
+    background-color: #f8f9fa; /* Light background for footer */
+    padding: 20px; /* Padding for footer */
+    text-align: center; /* Center text in footer */
+}
+
+footer h5 {
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+footer .social-icons a {
+    font-size: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+footer .social-icons a:hover {
+    color: #228B22 !important;
+}
+
+footer ul li {
+    margin-bottom: 0.5rem;
+}
+
+footer ul li a {
+    transition: color 0.3s ease;
+}
+
+footer ul li a:hover {
+    color: #007bff !important;
+    text-decoration: none;
+}
+
+footer .btn-outline-secondary {
+    color: #228B22;
+    border-color: #228B22;
+}
+
+footer .btn-outline-secondary:hover {
+    color: #fff;
+    background-color: #228B22;
+    border-color: #228B22;
+}
+.jumbotron {
+    background-color: #e9f7ef; /* Light green background */
+    border-radius: 10px; /* Rounded corners */
+    padding: 40px; /* More padding */
+    margin: 30px auto; /* Center the jumbotron */
+    max-width: 800px; /* Limit the width */
+}
+/* Centering the newsletter input */
+.newsletter input {
+    width: 300px; /* Fixed width for input */
+    display: inline-block; /* Keep it inline with the button */
+}
+
+/* Why Choose Section */
+.row {
+    margin-top: 30px; /* Space above the row */
+}
+
+h4 {
+    font-size: 1.5rem; /* Font size for headings */
+    color: #2c3e50; /* Darker text color */
+}
+
+p {
+    color: #555; /* Darker gray for paragraph text */
+}
+
+/* Button Styles */
+.btn-success {
+    background-color: #228B22	; /* Bootstrap success color */
+    border-color: #28a745; /* Match border color */
+}
+
+.btn-success:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+/* Add or update these styles in your custom.css */
+
+/* Button Styles */
+.btn-primary {
+    background-color: #228B22; /* Forest Green */
+    border-color: #228B22;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #1B6B1B; /* Darker green on hover */
+    border-color: #1B6B1B;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Card Styles */
+.card {
+    transition: transform 0.2s;
+    height: 100%;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-img-top {
+    height: 200px; /* Set a fixed height for images */
+    object-fit: cover; /* Ensure images cover the area without distortion */
+}
+
+/* Pagination Styles */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.pagination a {
+    color: #228B22; /* Green color for pagination links */
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.pagination a:hover {
+    background-color: #f8f9fa;
+}
+
+.pagination strong {
+    color: #fff;
+    background-color: #228B22; /* Green background for current page */
+    padding: 5px 10px;
+    border-radius: 4px;
+}
