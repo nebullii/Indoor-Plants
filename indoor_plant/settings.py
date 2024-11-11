@@ -28,7 +28,11 @@ SECRET_KEY = "django-insecure-b+a8ww6yovgjwwsvq4&lihc=&ch3^mimfq22cxrix_&wx=2dn2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["indoor-plant-405v.onrender.com"]
+ALLOWED_HOSTS = [
+    "indoor-plant-405v.onrender.com",
+    "localhost",
+    "127.0.0.1:8000",
+    ]
 
 
 # Application definition
@@ -43,6 +47,7 @@ INSTALLED_APPS = [
     "accounts",  # Use this simple form for now
     "indoor_plant",
     'widget_tweaks',
+    'products',
 ]
 
 MIDDLEWARE = [
@@ -61,7 +66,7 @@ ROOT_URLCONF = "indoor_plant.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"], #new
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -85,7 +90,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "mysql",
         "USER": "root",
-        "PASSWORD": "nevi@usa",
+        "PASSWORD": "",
         "HOST": "localhost",
         "PORT": "3306",
     }
@@ -143,11 +148,14 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+    ]
 
 # Media files (User-uploaded files)
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # This is where uploaded files will be stored
 
 LOGOUT_REDIRECT_URL = 'home'
 
