@@ -4,31 +4,33 @@
 {% block title %}Welcome to Indoor Plant Store{% endblock %}
 
 {% block content %}
-<div class="jumbotron text-center">
+<div class="jumbotron text-center bg-light mx-auto" style="max-width: 800px;">
     <h1 class="display-4">Welcome to Indoor Plant Store</h1>
     <hr class="my-4">
     <p>Explore our wide selection of indoor plants, care guides, and accessories.</p>
-    <a class="btn btn-primary btn-lg" href="{% url 'product_gallery' %}" role="button">Shop Now</a>
+    <a class="btn btn-success btn-lg" href="{% url 'product_gallery' %}" role="button">Shop Now</a>
 </div>
 
 <div class="mt-5">
     <h2 class="text-center mb-4">Why Choose Indoor Plant Store?</h2>
-    <div class="row">
-        <div class="col-md-4 text-center">
+    <div class="row text-center">
+        <div class="col-md-4">
             <i class="fas fa-leaf fa-3x mb-3 text-success"></i>
             <h4>Wide Selection</h4>
             <p>Choose from hundreds of carefully curated indoor plants.</p>
         </div>
-        <div class="col-md-4 text-center">
+        <div class="col-md-4">
             <i class="fas fa-truck fa-3x mb-3 text-success"></i>
             <h4>Fast & Safe Delivery</h4>
             <p>We ensure your plants arrive fresh and undamaged.</p>
         </div>
-        <div class="col-md-4 text-center">
+        <div class="col-md-4">
             <i class="fas fa-hands-helping fa-3x mb-3 text-success"></i>
             <h4>Expert Care Advice</h4>
             <p>Get personalized tips to help your plants thrive.</p>
         </div>
     </div>
 </div>
+
+
 {% endblock %}
