@@ -1,36 +1,49 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Welcome to Indoor Plant Store{% endblock %}
+{% block title %}Indoor Plant Store{% endblock %}
 
 {% block content %}
-<div class="jumbotron text-center bg-light mx-auto" style="max-width: 800px;">
-    <h1 class="display-4">Welcome to Indoor Plant Store</h1>
-    <hr class="my-4">
-    <p>Explore our wide selection of indoor plants, care guides, and accessories.</p>
-    <a class="btn btn-success btn-lg" href="{% url 'product_gallery' %}" role="button">Shop Now</a>
+<div class="jumbotron bg-light text-center mx-auto" style="max-width: 750px; padding: 3rem; border-radius: 8px; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);">
+    <h1 class="display-4 font-weight-bold text-dark">Discover Green Bliss</h1>
+    <p class="lead text-secondary">Bring life to your space with our curated collection of indoor plants, perfect for homes, offices, and anywhere in between.</p>
+    <a class="btn btn-success btn-lg mt-3 px-4 py-2" href="{% url 'product_gallery' %}" role="button">Explore Our Collection</a>
 </div>
 
-<div class="mt-5">
-    <h2 class="text-center mb-4">Why Choose Indoor Plant Store?</h2>
+<div class="container mt-5">
+    <h2 class="text-center mb-5 font-weight-bold text-dark">Why Choose Us?</h2>
     <div class="row text-center">
-        <div class="col-md-4">
-            <i class="fas fa-leaf fa-3x mb-3 text-success"></i>
-            <h4>Wide Selection</h4>
-            <p>Choose from hundreds of carefully curated indoor plants.</p>
+        <div class="col-md-4 mb-4">
+            <div class="icon-container mb-3 text-success">
+                <i class="fas fa-leaf fa-3x"></i>
+            </div>
+            <h5 class="font-weight-bold text-dark">Diverse Selection</h5>
+            <p class="text-muted">Find the perfect plant to suit any setting, from low-light rooms to sunlit spaces.</p>
         </div>
-        <div class="col-md-4">
-            <i class="fas fa-truck fa-3x mb-3 text-success"></i>
-            <h4>Fast & Safe Delivery</h4>
-            <p>We ensure your plants arrive fresh and undamaged.</p>
+        <div class="col-md-4 mb-4">
+            <div class="icon-container mb-3 text-success">
+                <i class="fas fa-shipping-fast fa-3x"></i>
+            </div>
+            <h5 class="font-weight-bold text-dark">Safe & Swift Delivery</h5>
+            <p class="text-muted">Carefully packaged and delivered to your door, ensuring freshness and quality.</p>
         </div>
-        <div class="col-md-4">
-            <i class="fas fa-hands-helping fa-3x mb-3 text-success"></i>
-            <h4>Expert Care Advice</h4>
-            <p>Get personalized tips to help your plants thrive.</p>
+        <div class="col-md-4 mb-4">
+            <div class="icon-container mb-3 text-success">
+                <i class="fas fa-seedling fa-3x"></i>
+            </div>
+            <h5 class="font-weight-bold text-dark">Expert Guidance</h5>
+            <p class="text-muted">Receive personalized tips to nurture and grow your indoor garden with confidence.</p>
         </div>
     </div>
 </div>
 
+<style>
+    .icon-container {
+        transition: transform 0.3s ease;
+    }
+    .icon-container:hover {
+        transform: scale(1.1);
+    }
+</style>
 
 {% endblock %}

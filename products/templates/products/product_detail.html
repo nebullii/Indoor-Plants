@@ -6,37 +6,48 @@
 {% block content %}
 <div class="container mt-5">
     <div class="row">
-        <!-- Product Image -->
+        <!-- Product Image Column -->
         <div class="col-md-6">
-            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid" />
+            <div class="product-image-container">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded" />
+            </div>
         </div>
 
-        <!-- Product Details -->
+        <!-- Product Details Column -->
         <div class="col-md-6">
-            <h1>{{ product.name }}</h1>
-            <p>{{ product.description }}</p>
-
-            <h3>Price: ${{ product.price|floatformat:2 }}</h3>
-            {% if product.seller %}
-            <p><strong>Seller:</strong> {{ product.seller.username }}</p>
-            {% endif %}
-            <p><strong>Standard Delivery Time:</strong> 5 business days</p>
-
-            <!-- Add to Cart Section -->
-            <div class="mt-3">
-                <form action="{% url 'add_to_cart' product.id %}" method="POST" class="d-flex align-items-center">
-                    {% csrf_token %}
-                    <div class="quantity-controls">
-                        <button type="button" class="btn btn-secondary" onclick="decrementQuantity()">-</button>
-                        <input type="number" name="quantity" id="quantity" value="1" min="1" class="mx-2 text-center" style="width: 50px;">
-                        <button type="button" class="btn btn-secondary" onclick="incrementQuantity()">+</button>
-                    </div>
-                    <button type="submit" class="btn btn-primary ml-3">Add to Cart</button>
-                </form>
+            <h1 class="product-title">{{ product.name }}</h1>
+            <div class="product-meta">
+                {% if product.seller %}
+                <p class="mb-2">Seller: {{ product.seller.username }}</p>
+                {% endif %}
+                <p class="mb-2">SKU: ERTH{{ product.id|stringformat:"02d" }}</p>
+            </div>
+            
+            <div class="pricing-section">
+                <h2 class="price-tag">${{ product.price|floatformat:2 }}</h2>
+                <span class="badge badge-success">In Stock</span>
+                <p class="shipping-info">
+                    <i class="fas fa-truck"></i> Standard Delivery Time: 5 business days
+                </p>
             </div>
 
-            <!-- Buy Now Button -->
-            <button class="btn btn-success mt-3">Buy Now with Stripe</button>
+            <div class="description-section">
+                <h4>Overview</h4>
+                <p>{{ product.description }}</p>
+            </div>
+
+            <div class="purchase-section">
+                <form action="{% url 'add_to_cart' product.id %}" method="POST" class="d-flex align-items-center mb-3">
+                    {% csrf_token %}
+                    <div class="quantity-controls flex-grow-1">
+                        <button type="button" class="btn btn-success btn-lg" onclick="decrementQuantity()">-</button>
+                        <input type="number" name="quantity" id="quantity" value="1" min="1" class="form-control mx-2">
+                        <button type="button" class="btn btn-success btn-lg" onclick="incrementQuantity()">+</button>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-lg">Add to Cart</button>
+                </form>
+                <button class="btn btn-success btn-lg btn-block">Buy Now</button>
+            </div>
 
             {% if messages %}
             <div class="messages mt-3">

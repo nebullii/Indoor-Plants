@@ -13,7 +13,7 @@ def product_gallery(request):
     product_list = Product.objects.all()
     
     # Set up pagination
-    paginator = Paginator(product_list, 6)  # Show 6 products per page
+    paginator = Paginator(product_list, 8)  # Show 6 products per page
     page_number = request.GET.get('page')
     products = paginator.get_page(page_number)
 
@@ -32,3 +32,11 @@ def add_product(request):
         form = ProductForm()
     
     return render(request, 'products/add_product.html', {'form': form})
+
+@login_required
+def seller_products(request):
+    # Get all products belonging to the current logged-in vendor
+    products = Product.objects.filter(seller=request.user)
+    return render(request, 'products/seller_products.html', {
+        'products': products
+    })
