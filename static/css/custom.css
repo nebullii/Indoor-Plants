@@ -1,6 +1,7 @@
+
 /* Centering the footer */
 .footer {
-    background-color: #f8f9fa; /* Light background for footer */
+    background-color: #F0FFF0; /* Light background for footer */
     padding: 20px; /* Padding for footer */
     text-align: center; /* Center text in footer */
 }
@@ -136,4 +137,42 @@ p {
     background-color: #228B22; /* Green background for current page */
     padding: 5px 10px;
     border-radius: 4px;
+}
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+}
+
+.quantity-controls input {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0.25rem;
+    text-align: center;
+}
+
+.quantity-controls button {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #228B22; /* Forest Green */
+    border-color: #228B22;
+    color: white;
+}
+.quantity-controls button:hover {
+    background-color: #1B6B1B; /* Darker green on hover */
+    border-color: #1B6B1B;
+}
+/* Remove the default button styling */
+.quantity-controls .btn-secondary {
+    background-color: #228B22 !important; /* Forest Green */
+    border-color: #228B22 !important;
+}
+
+.quantity-controls .btn-secondary:hover {
+    background-color: #1B6B1B !important; /* Darker green */
+    border-color: #1B6B1B !important;
 }
