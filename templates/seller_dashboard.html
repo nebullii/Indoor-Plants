@@ -10,7 +10,8 @@
             <div class="card-body">
 	            <h5 class="card-title">My Products</h5>
 	            <p class="card-text">Manage your plant listings.</p>
-	            <a href="#" class="btn btn-primary">Manage Products</a>
+                <a href="{% url 'seller_products' %}" class="btn btn-outline-success">view Products</a>
+	            <a href="{% url 'add_product' %}" class="btn btn-outline-success">+ New</a>
             </div>
         </div>
     </div>
@@ -19,7 +20,7 @@
             <div class="card-body">
                 <h5 class="card-title">Orders</h5>
                 <p class="card-text">View and process customer orders.</p>
-                <a href="#" class="btn btn-primary">View Orders</a>
+                <a href="#" class="btn btn-outline-success">View Orders</a>
             </div>
         </div>
     </div>
@@ -28,7 +29,7 @@
             <div class="card-body">
                 <h5 class="card-title">Analytics</h5>
                 <p class="card-text">View sales and performance metrics.</p>
-                <a href="#" class="btn btn-primary">View Analytics</a>
+                <a href="#" class="btn btn-outline-success">View Analytics</a>
             </div>
         </div>
     </div>
