@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "indoor_plant",
     'widget_tweaks',
     'products',
+    'cart',
 ]
 
 MIDDLEWARE = [
