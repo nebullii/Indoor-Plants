@@ -3,6 +3,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import ProductForm
 from .models import Product
+from cart.models import Order
+from django.views import View
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
@@ -10,7 +12,7 @@ def product_detail(request, product_id):
 
 def product_gallery(request):
     # Fetch all products from the database
-    product_list = Product.objects.all()
+    product_list = Product.objects.all().order_by('-created_at')
     
     # Set up pagination
     paginator = Paginator(product_list, 8)  # Show 6 products per page
@@ -40,3 +42,8 @@ def seller_products(request):
     return render(request, 'products/seller_products.html', {
         'products': products
     })
+
+class BuyerDashboardView(View):
+    def get(self, request):
+        orders = Order.objects.filter(user=request.user)  # Fetch orders for the logged-in user
+        return render(request, 'buyer_dashboard.html', {'orders': orders})

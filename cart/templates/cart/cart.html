@@ -47,7 +47,11 @@
         </table>
         <div class="text-right mt-3">
             <a href="{% url 'product_gallery' %}" class="btn btn-secondary">Continue Shopping</a>
-            <a href="#" class="btn btn-success">Proceed to Checkout</a>
+            <!-- Updated the Proceed to Checkout button to submit a form -->
+            <form action="{% url 'place-order' %}" method="post" class="d-inline">
+       {% csrf_token %}
+                <button type="submit" class="btn btn-success">Proceed to Checkout</button>
+            </form>
         </div>
     {% else %}
         <p>Your cart is empty. <a href="{% url 'product_gallery' %}">Continue shopping</a></p>
