@@ -1,8 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from products.models import Product
-from .models import Cart, CartItem
+from .models import Cart, CartItem, Order
+from django.views import View
+from django.http import JsonResponse
+from django.conf import settings
+import stripe
 
 @login_required
 def view_cart(request):
@@ -55,3 +61,25 @@ def remove_from_cart(request, item_id):
     cart_item.delete()
     messages.success(request, 'Item removed from cart.')
     return redirect('view_cart')
+
+stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
+
+@method_decorator(csrf_protect, name='dispatch')
+class PlaceOrderView(View):
+    def post(self, request):
+        cart = get_object_or_404(Cart, user=request.user)
+        
+        try:
+            order = Order.objects.create(user=request.user, cart=cart)
+            cart.cartitem_set.all().delete()
+            messages.success(request, 'Your order has been placed successfully.')
+        except Exception as e:
+            messages.error(request, 'There was an error placing your order. Please try again.')
+            print(f"Error placing order: {e}")
+
+        return redirect('home')
+    
+class CreateCheckoutSession(View):
+    def post(self, request):
+        # Your logic to create a checkout session with Stripe
+        pass  # Replace with actual implementation

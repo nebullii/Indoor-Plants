@@ -27,9 +27,13 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'buyer_dashboard' %}">My Account</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'seller_dashboard' %}">Sell</a>
-                    </li>
+                    {% if user.is_authenticated %}
+                        {% if user.role == 'SELLER' %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'seller_dashboard' %}">Sell</a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'view_cart' %}">
                             <i class="fas fa-shopping-cart"></i>

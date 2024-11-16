@@ -3,6 +3,15 @@ from django.db import models
 from django.conf import settings  # Add this import
 from products.models import Product
 
+class Order(models.Model):  # New Order model
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    cart = models.ForeignKey('Cart', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Order {self.id} for {self.user.username}"
+
 class Cart(models.Model):
     # Update this line
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
