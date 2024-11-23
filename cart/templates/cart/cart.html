@@ -1,60 +1,230 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load static %}
+    
+{% block title %}Shopping Cart - Indoor Plant Store{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2>Your Shopping Cart</h2>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Shopping Cart</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent p-0 mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'products:product_gallery' %}">Home</a></li>
+                <li class="breadcrumb-item active">Cart</li>
+            </ol>
+        </nav>
+    </div>
+
     {% if cart_items %}
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in cart_items %}
-                <tr>
-                    <td>{{ item.product.name }}</td>
-                    <td>${{ item.product.price|floatformat:2 }}</td>
-                    <td>
-                        <form action="{% url 'update_cart' item.id %}" method="POST" class="d-inline">
-                            {% csrf_token %}
-                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control d-inline" style="width: 80px">
-                            <button type="submit" class="btn btn-sm btn-primary">Update</button>
-                        </form>
-                    </td>
-                    <td>${{ item.get_total|floatformat:2 }}</td>
-                    <td>
-                        <form action="{% url 'remove_from_cart' item.id %}" method="POST" class="d-inline">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-sm btn-danger">Remove</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="3" class="text-right"><strong>Total:</strong></td>
-                    <td><strong>${{ total|floatformat:2 }}</strong></td>
-                    <td></td>
-                </tr>
-            </tfoot>
-        </table>
-        <div class="text-right mt-3">
-            <a href="{% url 'product_gallery' %}" class="btn btn-secondary">Continue Shopping</a>
-            <!-- Updated the Proceed to Checkout button to submit a form -->
-            <form action="{% url 'place-order' %}" method="post" class="d-inline">
-       {% csrf_token %}
-                <button type="submit" class="btn btn-success">Proceed to Checkout</button>
-            </form>
+        <div class="cart-table">
+            <div class="cart-header">
+                <div class="row align-items-center">
+                    <div class="col-md-6">Product</div>
+                    <div class="col-md-2">Price</div>
+                    <div class="col-md-2">Quantity</div>
+                    <div class="col-md-1">Total</div>
+                    <div class="col-md-1">Actions</div>
+                </div>
+            </div>
+
+            {% for item in cart_items %}
+            <div class="cart-item" data-price="{{ item.product.price }}">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="product-info">
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="cart-item-image">
+                            <span class="product-name">{{ item.product.name }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        $<span class="item-price">{{ item.product.price }}</span>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="quantity-controls">
+                            <button type="button" class="btn btn-sm btn-outline-secondary decrease-qty" data-item-id="{{ item.id }}">-</button>
+                            <input type="number" 
+                                   value="{{ item.quantity }}" 
+                                   min="1" 
+                                   class="quantity-input"
+                                   data-item-id="{{ item.id }}">
+                            <button type="button" class="btn btn-sm btn-outline-secondary increase-qty" data-item-id="{{ item.id }}">+</button>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        $<span class="item-total">{{ item.get_total }}</span>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-danger btn-sm remove-item" data-item-id="{{ item.id }}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="cart-summary">
+                <div class="row justify-content-end">
+                    <div class="col-md-4">
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span>$<span id="subtotal">{{ subtotal }}</span></span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Shipping:</span>
+                            <span>$<span id="shipping">{{ shipping_cost }}</span></span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total:</span>
+                            <span>$<span id="total">{{ total }}</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cart-actions">
+                <a href="{% url 'products:product_gallery' %}" class="btn btn-outline-success">
+                    <i class="fas fa-arrow-left"></i> Continue Shopping
+                </a>
+                <a href="{% url 'orders:shipping_address_select' %}" class="btn btn-success">
+                    <i class="fas fa-shopping-cart"></i> Proceed to Checkout
+                </a>
+            </div>
         </div>
     {% else %}
-        <p>Your cart is empty. <a href="{% url 'product_gallery' %}">Continue shopping</a></p>
+        <div class="empty-cart">
+            <i class="fas fa-shopping-cart"></i>
+            <h3>Your cart is empty</h3>
+            <p>Looks like you haven't added any plants to your cart yet.</p>
+            <a href="{% url 'products:product_gallery' %}" class="btn btn-success">
+                Start Shopping
+            </a>
+        </div>
     {% endif %}
 </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    // Update quantity when input changes
+    document.querySelectorAll('.quantity-input').forEach(input => {
+        input.addEventListener('change', function() {
+            updateQuantity(this.dataset.itemId, this.value);
+        });
+    });
+
+    // Increase quantity
+    document.querySelectorAll('.increase-qty').forEach(button => {
+        button.addEventListener('click', function() {
+            const input = document.querySelector(`.quantity-input[data-item-id="${this.dataset.itemId}"]`);
+            input.value = parseInt(input.value) + 1;
+            updateQuantity(this.dataset.itemId, input.value);
+        });
+    });
+
+    // Decrease quantity
+    document.querySelectorAll('.decrease-qty').forEach(button => {
+        button.addEventListener('click', function() {
+            const input = document.querySelector(`.quantity-input[data-item-id="${this.dataset.itemId}"]`);
+            if (parseInt(input.value) > 1) {
+                input.value = parseInt(input.value) - 1;
+                updateQuantity(this.dataset.itemId, input.value);
+            }
+        });
+    });
+
+    // Remove item
+    document.querySelectorAll('.remove-item').forEach(button => {
+        button.addEventListener('click', function() {
+            removeItem(this.dataset.itemId);
+        });
+    });
+
+    function updateQuantity(itemId, quantity) {
+        fetch(`/cart/update/${itemId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({
+                quantity: quantity
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update the item total
+                const itemRow = document.querySelector(`.quantity-input[data-item-id="${itemId}"]`).closest('.cart-item');
+                itemRow.querySelector('.item-total').textContent = data.item_total;
+
+                // Update cart totals
+                document.getElementById('subtotal').textContent = data.cart_subtotal;
+                document.getElementById('total').textContent = data.cart_total;
+
+                // Show success message
+                //showMessage('Cart updated successfully', 'success');
+            } else {
+                showMessage(data.message || 'Error updating cart', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showMessage('Error updating cart', 'error');
+        });
+    }
+
+    function removeItem(itemId) {
+        fetch(`/cart/remove/${itemId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Remove the item row
+                const itemRow = document.querySelector(`.cart-item[data-item-id="${itemId}"]`);
+                console.log('Removing item:', itemId);
+                itemRow.remove();
+                
+                // Update cart totals
+                document.getElementById('subtotal').textContent = data.cart_subtotal;
+                document.getElementById('total').textContent = data.cart_total;
+
+                // Show success message
+                showMessage('Item removed from cart', 'success');
+
+                // Reload if cart is empty
+                if (data.cart_count === 0) {
+                    location.reload();
+                }
+            } else {
+                showMessage(data.message || 'Error removing item', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showMessage('Error removing item', 'error');
+        });
+    }
+
+    function showMessage(message, type) {
+        const messageBox = document.getElementById('message-box');
+        messageBox.textContent = message;
+        messageBox.className = `alert alert-${type}`;
+        messageBox.style.display = 'block';
+    }
+});
+</script>
 {% endblock %}

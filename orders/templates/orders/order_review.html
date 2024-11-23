@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Review Order - Indoor Plant Store{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="page-header">
+        <h1 class="h2">Review Order</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'cart:view_cart' %}">Cart</a></li>
+                <li class="breadcrumb-item active">Review Order</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="shipping-card">
+                <h5 class="section-title">Shipping Address</h5>
+                <div class="shipping-details">
+                    <p>{{ shipping_address.full_name }}</p>
+                    <p>{{ shipping_address.address }}</p>
+                    <p>{{ shipping_address.city }}, {{ shipping_address.state }} {{ shipping_address.postal_code }}</p>
+                    <p>Phone: {{ shipping_address.phone_number }}</p>
+                </div>
+                <a href="{% url 'orders:shipping_address_select' %}" class="btn btn-outline-secondary btn-sm">
+                    <i class="fas fa-edit"></i> Change Address
+                </a>
+            </div>
+
+            <div class="order-items-card">
+                <h5 class="section-title">Order Items</h5>
+                {% for item in cart_items %}
+                    <div class="order-item">
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="order-item-image">
+                        <div class="order-item-details">
+                            <h6 class="item-name">{{ item.product.name }}</h6>
+                            <p class="item-quantity">Quantity: {{ item.quantity }}</p>
+                        </div>
+                        <div class="order-item-price">${{ item.get_total }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="order-summary">
+                <h5 class="section-title">Order Summary</h5>
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span>${{ subtotal }}</span>
+                </div>
+                <div class="summary-row">
+                    <span>Shipping</span>
+                    <span>${{ shipping_cost }}</span>
+                </div>
+                <div class="summary-divider"></div>
+                <div class="summary-row total">
+                    <span>Total</span>
+                    <span>${{ total }}</span>
+                </div>
+                <form method="post" action="{% url 'orders:create_order' %}" class="mt-3">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success btn-block">
+                        <i class="fas fa-check"></i> Place Order
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/order.css' %}?v=1.3">
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">Order Summary</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent p-0 mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'orders:order_list' %}">Orders</a></li>
+                <li class="breadcrumb-item active">Order #{{ order.id }}</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Order Items Table -->
+    <div class="card mb-4">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th class="text-end">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order.orderitem_set.all %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="{{ item.product.image.url }}" class="product-image me-3">
+                                <span>{{ item.product.name }}</span>
+                            </div>
+                        </td>
+                        <td>${{ item.price }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td class="text-end">${{ item.get_total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Order Details -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">Order Information</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-5">Order ID:</dt>
+                                <dd class="col-sm-7">#{{ order.id }}</dd>
+
+                                <dt class="col-sm-5">Order Date:</dt>
+                                <dd class="col-sm-7">{{ order.created_at|date:"F j, Y" }}</dd>
+
+                                <dt class="col-sm-5">Status:</dt>
+                                <dd class="col-sm-7">
+                                    <span class="badge badge-warning">{{ order.status }}</span>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-5">Payment Method:</dt>
+                                <dd class="col-sm-7">Credit Card</dd>
+
+                                <dt class="col-sm-5">Payment Status:</dt>
+                                <dd class="col-sm-7">
+                                    <span class="badge badge-success">Paid</span>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <h6 class="mt-4 mb-3">Shipping Address</h6>
+                    <p class="mb-0">{{ order.shipping_address.full_name }}</p>
+                    <p class="mb-0">{{ order.shipping_address.address }}</p>
+                    <p class="mb-0">{{ order.shipping_address.city }}, {{ order.shipping_address.state }} {{ order.shipping_address.postal_code }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Summary -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">Payment Summary</h5>
+                    <dl class="dlist-align">
+                        <dt>Subtotal:</dt>
+                        <dd class="text-end">${{ order.subtotal }}</dd>
+                    </dl>
+                    <dl class="dlist-align">
+                        <dt>Shipping:</dt>
+                        <dd class="text-end">${{ order.shipping_cost }}</dd>
+                    </dl>
+                    <hr>
+                    <dl class="dlist-align total">
+                        <dt>Total:</dt>
+                        <dd class="text-end">${{ order.total }}</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

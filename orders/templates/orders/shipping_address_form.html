@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if editing %}Edit{% else %}Add{% endif %} Shipping Address - Indoor Plant Store{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="page-header">
+        <h1 class="h2">{% if editing %}Edit{% else %}Add{% endif %} Shipping Address</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'orders:shipping_address_list' %}">Addresses</a></li>
+                <li class="breadcrumb-item active">{% if editing %}Edit{% else %}Add{% endif %} Address</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="form-card">
+                <form method="post" class="shipping-form">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-group">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                            {% if field.errors %}
+                                <div class="invalid-feedback">
+                                    {{ field.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <div class="form-actions">
+                        <a href="{% url 'orders:shipping_address_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save"></i> {% if editing %}Update{% else %}Save{% endif %} Address
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

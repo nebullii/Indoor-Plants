@@ -3,8 +3,14 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import ProductForm
 from .models import Product
-from cart.models import Order
+from orders.models import Order
 from django.views import View
+
+def home(request):
+    featured_products = Product.objects.filter(featured=True)[:4]
+    return render(request, 'home.html', {
+        'featured_products': featured_products
+    })
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
@@ -24,12 +30,12 @@ def product_gallery(request):
 @login_required
 def add_product(request):
     if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES)  # Handle file uploads
+        form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save(commit=False)
-            product.seller = request.user  # Set the seller to the currently logged-in user
+            product.seller = request.user
             product.save()
-            return redirect('product_gallery')  # Redirect to the product gallery after saving
+            return redirect('products:product_gallery')  # Add namespace
     else:
         form = ProductForm()
     

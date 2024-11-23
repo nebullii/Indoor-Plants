@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Checkout - Indoor Plant Store{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/checkout.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="payment-container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="payment-details">
+                <h2>Payment Details</h2>
+                <form id="payment-form">
+                    {% csrf_token %}
+                    <div id="card-element" class="form-control">
+                        <!-- Stripe Elements will inject a card input form here -->
+                    </div>
+                    <div id="card-errors" class="text-danger mt-2" role="alert"></div>
+                    <button type="submit" id="submit" class="btn btn-success mt-3">
+                        Pay ${{ total }}
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="order-summary">
+                <h3>Order Summary</h3>
+                <div class="summary-item">
+                    <span>Subtotal</span>
+                    <span>${{ cart.get_subtotal }}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Shipping</span>
+                    <span>${{ shipping_cost }}</span>
+                </div>
+                <div class="summary-item summary-total">
+                    <span>Total</span>
+                    <span>${{ total }}</span>
+                </div>
+            </div>
+
+            <div class="shipping-address">
+                <h3>Shipping Address</h3>
+                <p>{{ shipping_address.full_name }}</p>
+                <p>{{ shipping_address.address }}</p>
+                <p>{{ shipping_address.city }}, {{ shipping_address.state }} {{ shipping_address.postal_code }}</p>
+                <p>{{ shipping_address.country.name }}</p>
+                <div class="address-change">
+                    <a href="{% url 'orders:shipping_address_select' %}" class="btn btn-outline-success">Change Address</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Stripe.js -->
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    const stripe = Stripe('{{ STRIPE_PUBLISHABLE_KEY }}');
+    const elements = stripe.elements();
+    const card = elements.create('card');
+    card.mount('#card-element');
+
+    const form = document.getElementById('payment-form');
+    const submitButton = document.getElementById('submit');
+    let paymentInProgress = false;
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        
+        if (paymentInProgress) {
+            return;
+        }
+        
+        paymentInProgress = true;
+        submitButton.disabled = true;
+        submitButton.textContent = 'Processing...';
+        
+        const errorDisplay = document.getElementById('card-errors');
+        errorDisplay.textContent = '';
+
+        try {
+            // Create payment intent
+            const response = await fetch("{% url 'payments:process_payment' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+                body: JSON.stringify({})
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            // Confirm the payment
+            const result = await stripe.confirmCardPayment(data.clientSecret, {
+                payment_method: {
+                    card: card,
+                    billing_details: {
+                        name: '{{ shipping_address.full_name }}',
+                        email: '{{ user.email }}',
+                        address: {
+                            line1: '{{ shipping_address.address }}',
+                            city: '{{ shipping_address.city }}',
+                            state: '{{ shipping_address.state }}',
+                            postal_code: '{{ shipping_address.postal_code }}',
+                            country: '{{ shipping_address.country.code }}'
+                        }
+                    }
+                }
+            });
+
+            if (result.error) {
+                throw new Error(result.error.message);
+            }
+
+            if (result.paymentIntent.status === 'succeeded') {
+                submitButton.textContent = 'Payment successful! Redirecting...';
+                window.location.href = "{% url 'payments:payment_success' %}";
+                return;
+            }
+
+        } catch (error) {
+            errorDisplay.textContent = error.message;
+        } finally {
+            if (!errorDisplay.textContent) {
+                paymentInProgress = false;
+                submitButton.disabled = false;
+                submitButton.textContent = 'Pay ${{ total }}';
+            }
+        }
+    });
+
+    card.addEventListener('change', (event) => {
+        const displayError = document.getElementById('card-errors');
+        if (event.error) {
+            displayError.textContent = event.error.message;
+        } else {
+            displayError.textContent = '';
+        }
+    });
+</script>
+{% endblock %}
