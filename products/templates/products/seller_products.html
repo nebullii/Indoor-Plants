@@ -25,7 +25,7 @@
         {% empty %}
             <div class="col-12">
                 <p>You haven't added any products yet.</p>
-                <a href="{% url 'add_product' %}" class="btn btn-success">Add Your First Product</a>
+                <a href="{% url 'products:add_product' %}" class="btn btn-success">Add Your First Product</a>
             </div>
         {% endfor %}
     </div>

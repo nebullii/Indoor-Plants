@@ -13,6 +13,9 @@ import dj_database_url
 from pathlib import Path
 import environ
 import os
+from dotenv import load_dotenv
+from django.core.exceptions import ImproperlyConfigured
+load_dotenv()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -49,6 +52,9 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'products',
     'cart',
+    'orders',
+    'payments',
+    'django_countries',
 ]
 
 MIDDLEWARE = [
@@ -171,8 +177,12 @@ LOGOUT_REDIRECT_URL = 'home'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
-   # settings.py
-STRIPE_TEST_PUBLIC_KEY = 'pk_test_51Lc3phSB7PX079QvQGMOMFEXPSUZaEsxHKJ39P9IQF9tEsW54eAoYj6fmyfzPx13xLvBMQ3ChHdYQuKxS71Q5nnr00p7QhLqYG'
-STRIPE_TEST_SECRET_KEY = 'sk_test_51Lc3phSB7PX079Qvc48Sb5lvzQYVBfnRjS5gcGF4yamRh8RHFbVBG90ODr27BYKoHPxp9ST4T0YU9G3DYEBXUiIC00W1uCAtTK'
+#Stripe Publishable key and Secret key 
 
+STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLIC_KEY','pk_test_51QMy07GUxl6r0dvOeQveEr8x1j8rJ3Oqc7xXg6ZccyXjZ2qENsYwgivBMcApSNmBWIISta49qn5zSnnQA4EnWND1005CJcPMH0')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', 'sk_test_51QMy07GUxl6r0dvOB0VSqJaoNaMQHr1NPqeD3Ow04dLAHOSzLPF3xVtIJbrPiTvRG4mmz6syiAvmsTB18kgXTU1X00jbncuGiQ')
 
+if not STRIPE_PUBLISHABLE_KEY or not STRIPE_SECRET_KEY:
+    raise ImproperlyConfigured('Stripe API keys are not set in environment variables')
+
+SHIPPING_COST = 5.00

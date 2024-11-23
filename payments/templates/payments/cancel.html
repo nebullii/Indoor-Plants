@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment Cancelled - Indoor Plant Store{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center">
+        <i class="fas fa-times-circle text-danger" style="font-size: 4rem;"></i>
+        <h1 class="mt-4">Payment Cancelled</h1>
+        <p class="lead">Your payment was cancelled. Please try again.</p>
+        <a href="{% url 'payments:checkout' %}" class="btn btn-success mt-4">Try Again</a>
+    </div>
+</div>
+{% endblock %}

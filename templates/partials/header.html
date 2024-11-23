@@ -1,65 +1,72 @@
-<header class="border-bottom py-2 px-4">
-    <nav class="navbar navbar-expand-lg navbar-light">
+<header class="border-bottom">
+    <!-- Top Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light py-2">
         <div class="container">
-            <!-- Logo and Website Name -->
+            <!-- Logo and Brand -->
             <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
-                <i class="fab fa-pagelines text-success mr-2" style="font-size: 24px;"></i>
-                Indoor Plant Store
+                <i class="fab fa-pagelines text-success mr-2"></i>
+                <span class="font-weight-bold">Indoor Plants</span>
             </a>
 
-            <form class="form-inline my-2 my-lg-0 mx-auto">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search plants..." aria-label="Search" style= "width: 500px;">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- Navbar content -->
-            <div class="collapse navbar-collapse" id="navbarContent">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home' %}">
-                            <i class="fas fa-home"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'buyer_dashboard' %}">My Account</a>
-                    </li>
-                    {% if user.is_authenticated %}
-                        {% if user.role == 'SELLER' %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'seller_dashboard' %}">Sell</a>
-                            </li>
-                        {% endif %}
-                    {% endif %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'view_cart' %}">
-                            <i class="fas fa-shopping-cart"></i>
-                            {% if request.user.cart.cartitem_set.count %}
-                                <span class="badge badge-pill badge-success">{{ request.user.cart.cartitem_set.count }}</span>
-                            {% endif %}
-                        </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Account
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            {% if user.is_authenticated %}
-                                <form method="post" action="{% url 'logout' %}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-link">Logout</button>
-                                </form>                            
-                            {% else %}
-                                <a class="dropdown-item" href="{% url 'signup' %}">Sign Up</a>
-                                <a class="dropdown-item" href="{% url 'login' %}">Login</a>
-                            {% endif %}
+            <!-- Search Bar -->
+            <div class="search-container mx-auto d-none d-lg-block">
+                <form class="form-inline">
+                    <div class="input-group" style="width: 600px;">
+                        <input type="search" class="form-control" placeholder="Search plants..." aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-success" type="submit">Search</button>
                         </div>
-                    </li>
-                </ul>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Right Navigation Items -->
+            <div class="d-flex align-items-center">
+                <a href="{% url 'home' %}" class="nav-link text-dark">
+                    <i class="fas fa-home"></i>
+                    <span class="d-block small">Home</span>
+                </a>
+                <a href="{% url 'cart:view_cart' %}" class="nav-link text-dark mx-3 position-relative">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="d-block small">Cart</span>
+                    {% if request.user.is_authenticated and request.user.cart.cartitem_set.count %}
+                        <span class="badge badge-success position-absolute" style="top: 0; right: 0;">
+                            {{ request.user.cart.cartitem_set.count }}
+                        </span>
+                    {% endif %}
+                </a>
+                {% if user.is_authenticated %}
+                    <div class="dropdown">
+                        <a class="nav-link text-dark dropdown-toggle" href="#" role="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i>
+                            <span class="d-block small">{{ user.username }}</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                            {% if user.role == 'SELLER' %}
+                                <a class="dropdown-item" href="{% url 'accounts:seller_dashboard' %}">Seller Dashboard</a>
+                                <a class="dropdown-item" href="{% url 'products:add_product' %}">Add Product</a>
+                                <a class="dropdown-item" href="{% url 'products:seller_products' %}">My Products</a>
+                            {% elif user.role == 'BUYER' %}
+                                <a class="dropdown-item" href="{% url 'accounts:buyer_dashboard' %}">Dashboard</a>
+                            {% elif user.is_staff %}
+                                <a class="dropdown-item" href="{% url 'accounts:admin_dashboard' %}">Admin Dashboard</a>
+                            {% endif %}
+                            <div class="dropdown-divider"></div>
+                            <form method="post" action="{% url 'accounts:logout' %}" class="dropdown-item p-0">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link text-danger w-100 text-left px-3">Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{% url 'login' %}" class="nav-link text-dark">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span class="d-block small">Login</span>
+                    </a>
+                {% endif %}
             </div>
         </div>
     </nav>
+
+
 </header>

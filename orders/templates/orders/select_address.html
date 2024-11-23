@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Select Shipping Address - Indoor Plant{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Select Shipping Address</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent p-0 mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'cart:view_cart' %}">Cart</a></li>
+                <li class="breadcrumb-item active">Shipping</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="row">
+        {% for address in addresses %}
+        <div class="col-md-6 mb-4">
+            <div class="address-card">
+                <div class="address-content">
+                    <h3 class="h5 mb-3">{{ address.full_name }}</h3>
+                    <p class="mb-1">{{ address.street_address }}</p>
+                    <p class="mb-1">{{ address.city }}, {{ address.state }} {{ address.postal_code }}</p>
+                    <p class="mb-3">{{ address.country }}</p>
+                    <p class="mb-1">Phone: {{ address.phone_number }}</p>
+                    
+                    <form method="post" action="{% url 'orders:proceed_to_payment' address.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success btn-block mt-3">
+                            Deliver to this address
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- Add New Address Card -->
+        <div class="col-md-6 mb-4">
+            <div class="address-card">
+                <div class="address-content text-center">
+                    <p class="card-text text-muted mb-4">Need to ship to a different address?</p>
+                    <a href="{% url 'orders:add_shipping_address' %}" class="btn btn-outline-success btn-block">
+                        <i class="fas fa-plus"></i> Add New Address
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

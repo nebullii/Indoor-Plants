@@ -3,35 +3,95 @@
 {% block title %}Seller Dashboard - Indoor Plant Store{% endblock %}
 
 {% block content %}
-<h1 class="mb-4">Seller Dashboard</h1>
-<div class="row">
-    <div class="col-md-4 mb-4">
-        <div class="card">
-            <div class="card-body">
-	            <h5 class="card-title">My Products</h5>
-	            <p class="card-text">Manage your plant listings.</p>
-                <a href="{% url 'seller_products' %}" class="btn btn-outline-success">view Products</a>
-	            <a href="{% url 'add_product' %}" class="btn btn-outline-success">+ New</a>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Seller Dashboard</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent p-0 mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item active">Seller Dashboard</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="row">
+        <!-- Products Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 dashboard-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-store fa-2x text-success mr-3"></i>
+                        <h5 class="card-title mb-0">My Products</h5>
+                    </div>
+                    <p class="card-text text-muted">Manage your plant listings</p>
+                    <div class="btn-group d-flex">
+                        <a href="{% url 'products:seller_products' %}" class="btn btn-outline-success w-100">
+                            View Products
+                        </a>
+                        <a href="{% url 'products:add_product' %}" class="btn btn-success w-100">
+                            <i class="fas fa-plus"></i> Add New
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-4 mb-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Orders</h5>
-                <p class="card-text">View and process customer orders.</p>
-                <a href="#" class="btn btn-outline-success">View Orders</a>
+
+        <!-- Orders Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 dashboard-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-box fa-2x text-success mr-3"></i>
+                        <h5 class="card-title mb-0">Orders</h5>
+                    </div>
+                    <p class="card-text text-muted">Manage customer orders</p>
+                    <a href="#" class="btn btn-outline-success btn-block">
+                        View Orders <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-4 mb-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Analytics</h5>
-                <p class="card-text">View sales and performance metrics.</p>
-                <a href="#" class="btn btn-outline-success">View Analytics</a>
+
+        <!-- Analytics Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 dashboard-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-chart-line fa-2x text-success mr-3"></i>
+                        <h5 class="card-title mb-0">Analytics</h5>
+                    </div>
+                    <p class="card-text text-muted">Track your sales performance</p>
+                    <a href="#" class="btn btn-outline-success btn-block">
+                        View Analytics <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+.dashboard-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.breadcrumb {
+    margin: 0;
+}
+
+.breadcrumb-item a {
+    color: #228B22;
+}
+
+.btn-group {
+    gap: 0.5rem;
+}
+</style>
 {% endblock %}
