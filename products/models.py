@@ -11,6 +11,10 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)  # Timestamp for when the product was created
     updated_at = models.DateTimeField(auto_now=True)  # Timestamp for when the product was last updated
     featured = models.BooleanField(default=False)  # Whether the product is featured
+    hot_selling = models.BooleanField(default=False)  # Whether the product is hot selling
+
+    class Meta:
+        ordering = ['-created_at']
 
     def __str__(self):
         return self.name

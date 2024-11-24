@@ -1,34 +1,45 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Add Product{% endblock %}
+{% block title %}{% if product %}Edit{% else %}Add{% endif %} Product{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
-    <h2 class="text-center mb-4">Add New Product</h2>
+    <h2 class="text-center mb-4">{% if product %}Edit{% else %}Add New{% endif %} Product</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="form-group">
-            <label for="name">Product</label>
-            {{ form.name.label_tag }}
-            {{ form.name }}  <!-- No need for add_class filter -->
+        <div class="form-group mb-3">
+            <label for="name">Product Name</label>
+            {{ form.name }}
         </div>
-        <div class="form-group">
+        <div class="form-group mb-3">
             <label for="description">Description</label>
-            {{ form.description.label_tag }}
             {{ form.description }}
         </div>
-        <div class="form-group">
+        <div class="form-group mb-3">
             <label for="price">Price</label>
-            {{ form.price.label_tag }}
             {{ form.price }}
         </div>
-        <div class="form-group">
+        <div class="form-group mb-3">
             <label for="image">Image</label>
-            {{ form.image.label_tag }}
             {{ form.image }}
         </div>
-        <button type="submit" class="btn btn-primary">Add Product</button>
+        <div class="form-check mb-3">
+            {{ form.featured }}
+            <label class="form-check-label" for="id_featured">
+                Featured Product
+            </label>
+        </div>
+        <div class="form-check mb-3">
+            {{ form.hot_selling }}
+            <label class="form-check-label" for="id_hot_selling">
+                Hot Selling Product
+            </label>
+        </div>
+        <button type="submit" class="btn btn-success">
+            {% if product %}Update{% else %}Add{% endif %} Product
+        </button>
+        <a href="{% url 'products:seller_products' %}" class="btn btn-outline-secondary">Cancel</a>
     </form>
 </div>
 {% endblock %}

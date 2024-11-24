@@ -209,3 +209,39 @@ footer ul li a:hover {
         height: 150px;
     }
 }
+
+/* Custom container styles */
+.custom-container {
+    width: 100%;
+    padding-right: 30px;    /* Thingbits-style padding */
+    padding-left: 30px;     /* Thingbits-style padding */
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/* Hero section should be full width */
+.hero-section {
+    margin-left: -30px;     /* Negative margin to offset container padding */
+    margin-right: -30px;    /* Negative margin to offset container padding */
+    width: calc(100% + 60px); /* Full width accounting for container padding */
+}
+
+@media (min-width: 1400px) {
+    .custom-container {
+        max-width: 1600px;   /* Wider max-width like Thingbits */
+    }
+}
+
+@media (max-width: 768px) {
+    .custom-container {
+        padding-right: 15px;  /* Less padding on mobile */
+        padding-left: 15px;
+    }
+    
+    .hero-section {
+        margin-left: -15px;
+        margin-right: -15px;
+        width: calc(100% + 30px);
+    }
+}
+
