@@ -1,16 +1,15 @@
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import TemplateView
 from django.conf.urls.static import static
 from django.conf import settings
-from products.views import product_gallery  # Add this import
+from products.views import product_gallery, home  # Update this import
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('accounts.urls')),
-    path('', TemplateView.as_view(template_name='home.html'), name='home'),
-    path('gallery/', product_gallery, name='product_gallery'),  # Add this line
+    path('', home, name='home'),  # Update this line to use the home view
+    path('gallery/', product_gallery, name='product_gallery'),
     path('products/', include('products.urls', namespace='products')),
     path('cart/', include('cart.urls', namespace='cart')),
     path('orders/', include('orders.urls', namespace='orders')),

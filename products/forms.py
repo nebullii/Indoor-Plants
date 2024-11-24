@@ -5,28 +5,38 @@ from .models import Product
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'description', 'price', 'image']
-
+        fields = ['name', 'description', 'price', 'image', 'featured', 'hot_selling']
+    
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)
         # Add CSS classes and ensure id and name attributes are set
         self.fields['name'].widget.attrs.update({
             'class': 'form-control',
-            'id': 'product-name',  # Custom id
-            'name': 'product_name'  # Custom name
+            'id': 'product-name',
+            'name': 'product_name'
         })
         self.fields['description'].widget.attrs.update({
             'class': 'form-control',
-            'id': 'product-description',  # Custom id
-            'name': 'product_description'  # Custom name
+            'id': 'product-description',
+            'name': 'product_description'
         })
         self.fields['price'].widget.attrs.update({
             'class': 'form-control',
-            'id': 'product-price',  # Custom id
-            'name': 'product_price'  # Custom name
+            'id': 'product-price',
+            'name': 'product_price'
         })
         self.fields['image'].widget.attrs.update({
             'class': 'form-control-file',
-            'id': 'product-image',  # Custom id
-            'name': 'product_image'  # Custom name
+            'id': 'product-image',
+            'name': 'product_image'
+        })
+        self.fields['featured'].widget.attrs.update({
+            'class': 'form-check-input',
+            'id': 'product-featured',
+            'name': 'product_featured'
+        })
+        self.fields['hot_selling'].widget.attrs.update({
+            'class': 'form-check-input',
+            'id': 'product-hot-selling',
+            'name': 'product_hot_selling'
         })

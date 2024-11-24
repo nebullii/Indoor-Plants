@@ -7,10 +7,13 @@ from orders.models import Order
 from django.views import View
 
 def home(request):
-    featured_products = Product.objects.filter(featured=True)[:4]
-    return render(request, 'home.html', {
-        'featured_products': featured_products
-    })
+    featured_products = Product.objects.filter(featured=True).order_by('-created_at')[:4]
+    hot_selling_products = Product.objects.filter(hot_selling=True).order_by('-created_at')[:4]
+    context = {
+        'featured_products': featured_products,
+        'hot_selling_products': hot_selling_products,
+    }
+    return render(request, 'home.html', context)
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
@@ -47,6 +50,23 @@ def seller_products(request):
     products = Product.objects.filter(seller=request.user)
     return render(request, 'products/seller_products.html', {
         'products': products
+    })
+
+@login_required
+def edit_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id, seller=request.user)
+    
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('products:seller_products')
+    else:
+        form = ProductForm(instance=product)
+    
+    return render(request, 'products/add_product.html', {
+        'form': form,
+        'product': product
     })
 
 class BuyerDashboardView(View):

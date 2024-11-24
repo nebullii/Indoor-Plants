@@ -1,6 +1,9 @@
 # products/urls.py
 from django.urls import path
-from .views import product_detail, product_gallery, add_product, seller_products
+from . import views
+from .views import product_detail, product_gallery, add_product, seller_products, edit_product
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = 'products'
 urlpatterns = [
@@ -9,4 +12,7 @@ urlpatterns = [
     path('gallery/', product_gallery, name='product_gallery'),
     path('add/', add_product, name='add_product'),
     path('seller_products/', seller_products, name='seller_products'),
-]
+    path('edit/<int:product_id>/', views.edit_product, name='edit_product'),
+
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) \
+    + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
