@@ -1,0 +1,26 @@
+<div class="container mt-5">
+    <h2 class="section-title">Hot Selling Plants</h2>
+    <div class="row">
+        {% for product in hot_selling_products %}
+        <div class="col-md-3 mb-4">
+            <div class="product-card hot-selling">
+                {% if product.image %}
+                <div class="product-image">
+                    <div class="hot-selling-badge">Hot Selling</div>
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid">
+                </div>
+                {% endif %}
+                <div class="product-info">
+                    <h5>{{ product.name }}</h5>
+                    <p class="price">${{ product.price }}</p>
+                    <a href="{% url 'products:product_detail' product.id %}" class="btn btn-outline-success btn-sm">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p class="text-muted text-center">No hot selling products found</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
