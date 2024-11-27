@@ -1,43 +1,44 @@
 # Indoor Plant Store
 
-Welcome to the Indoor Plant Store project! This is a Django web application for buying and selling indoor plants.
+A Django-based e-commerce platform for buying and selling indoor plants. Features include user authentication, shopping cart, order management, and an admin dashboard.
+
+## Features
+
+- User Authentication (Customer & Seller)
+- Product Catalog with Categories
+- Shopping Cart
+- Order Management
+- Admin Dashboard
+- Secure Payment Integration
+- Responsive Design
 
 ## Prerequisites
 
-- Python 3.6 or higher
+- Python 3.9 or higher
 - pip (Python package installer)
+- Virtual environment
 
 ## Installation
 
-### Step 1: Clone the repository
+### 1. Clone the repository
+git clone https://github.com/yourusername/Indoor-Plant.git
 
-- git clone <repository-url>
-- cd indoor_plant_store
+cd Indoor-Plant
 
-### Step 2: Set up a virtual environment (optional but recommended)
+### 2. Create virtual environment
+python -m venv venv
 
-- python -m venv myenv
+### 3. Activate virtual environment
+#### For macOS/Linux:
+source venv/bin/activate
+#### For Windows:
+venv\Scripts\activate
 
-### Step 3: Activate the virtual environment
+### 4. Install dependencies
+pip install -r requirements.txt
 
-- source myenv/bin/activate #mac user
-- myenv\Scripts\activate #pc user
+### 5. Database Setup
+python manage.py migrate
 
-### Step 4: Install Django
-
-- pip install django
-
-### Step 6: Apply migrations
-
-- python manage.py migrate
-
-### Step 8: Run the development server
-
-- python manage.py runserver
-
-Open your browser and go to http://127.0.0.1:8000/ to see your project in action!
-
-
-
-
-
+### 6. Run the development server
+python manage.py runserver
