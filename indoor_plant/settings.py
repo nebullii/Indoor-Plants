@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'orders',
     'payments',
     'django_countries',
+    'admin_dashboard',
 ]
 
 MIDDLEWARE = [

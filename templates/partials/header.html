@@ -1,6 +1,6 @@
 <header class="border-bottom">
     <!-- Top Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light py-2">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light py-2 fixed-top">
         <div class="container">
             <!-- Logo and Brand -->
             <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
@@ -14,7 +14,9 @@
                     <div class="input-group" style="width: 600px;">
                         <input type="search" class="form-control" placeholder="Search plants..." aria-label="Search">
                         <div class="input-group-append">
-                            <button class="btn btn-success" type="submit">Search</button>
+                            <button class="btn btn-success" type="submit">
+                                <i class="fas fa-search"></i> <!-- Magnifying glass icon -->
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -24,7 +26,7 @@
             <div class="d-flex align-items-center">
                 <a href="{% url 'home' %}" class="nav-link text-dark">
                     <i class="fas fa-home"></i>
-                    <span class="d-block small">Home</span>
+                    <span class="d-block small"></span>
                 </a>
                 <a href="{% url 'cart:view_cart' %}" class="nav-link text-dark mx-3 position-relative">
                     <i class="fas fa-shopping-cart"></i>
@@ -49,7 +51,7 @@
                             {% elif user.role == 'BUYER' %}
                                 <a class="dropdown-item" href="{% url 'accounts:buyer_dashboard' %}">Dashboard</a>
                             {% elif user.is_staff %}
-                                <a class="dropdown-item" href="{% url 'accounts:admin_dashboard' %}">Admin Dashboard</a>
+                                <a class="dropdown-item" href="{% url 'admin_dashboard:dashboard' %}">Admin Dashboard</a>
                             {% endif %}
                             <div class="dropdown-divider"></div>
                             <form method="post" action="{% url 'accounts:logout' %}" class="dropdown-item p-0">

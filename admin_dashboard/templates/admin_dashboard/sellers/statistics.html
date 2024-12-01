@@ -1,0 +1,10 @@
+{% extends 'admin_dashboard/base_admin.html' %}
+
+{% block admin_content %}
+<div class="container-fluid">
+    <h4>Seller Statistics</h4>
+    <p>Total Sellers: {{ total_sellers }}</p>
+    <p>Verified Sellers: {{ verified_sellers }}</p>
+    <p>Inactive Sellers: {{ inactive_sellers }}</p>
+</div>
+{% endblock %}

@@ -36,28 +36,6 @@ def seller_dashboard(request):
 def is_admin(user):
     return user.is_authenticated and (user.is_staff or user.is_superuser) 
 
-@login_required
-@user_passes_test(lambda u: u.is_staff)
-def admin_dashboard(request):
-    # Get overall statistics
-    total_users = User.objects.count()
-    total_products = Product.objects.count()
-    total_orders = Order.objects.count()
-    total_revenue = Order.objects.aggregate(
-        total=Sum(F('orderitem__price') * F('orderitem__quantity'))
-    )['total'] or 0
-    
-    # Get recent orders with user information
-    recent_orders = Order.objects.select_related('user').order_by('-created_at')[:10]
-    
-    context = {
-        'total_users': total_users,
-        'total_products': total_products,
-        'total_orders': total_orders,
-        'total_revenue': round(total_revenue, 2) if total_revenue else 0,
-        'recent_orders': recent_orders,
-    }
-    return render(request, 'admin_dashboard.html', context)
 
 @login_required
 def profile_view(request):

@@ -1,8 +1,8 @@
 /* Container for the product page */
 .product-page {
     display: flex;
-    align-items: flex-start; /* Align items to the top */
-    gap: 2rem; /* Add space between the image and details */
+    align-items: flex-start;
+    gap: 2rem;
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
@@ -10,24 +10,22 @@
 
 /* Left image container */
 .product-image {
-    flex: 1; /* Allow the image container to take one part of the space */
-    max-width: 50%; /* Restrict the image size */
+    flex: 1;
+    max-width: 50%;
 }
 
-/* Image styling */
 .product-image img {
     width: 100%;
     height: auto;
-    border-radius: 8px; /* Optional: Add rounded corners */
+    border-radius: 8px;
 }
 
 /* Right details container */
 .product-details {
-    flex: 1; /* Allow the details container to take the remaining space */
+    flex: 1;
     max-width: 50%;
 }
 
-/* Title and price styling */
 .product-details h1 {
     font-size: 2rem;
     margin-bottom: 1rem;
@@ -39,7 +37,6 @@
     margin-bottom: 1rem;
 }
 
-/* Stock and delivery info */
 .product-details .stock {
     margin-bottom: 1rem;
     display: flex;
@@ -55,74 +52,99 @@
     font-size: 0.875rem;
 }
 
-/* Overview styling */
 .product-details .overview {
     margin-bottom: 1.5rem;
+}
+
+/* Purchase section styling */
+.purchase-section {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    margin-top: 1.5rem;
 }
 
 /* Quantity controls */
 .quantity-controls {
     display: flex;
     align-items: center;
-    gap: 0.5rem; /* Smaller gap between - button, input, and + button */
+    gap: 0; /* Remove gap for better alignment */
+    flex: 1; /* Allow quantity controls to take available space */
 }
 
 .quantity-controls button {
-    width: 40px;
-    height: 40px;
+    width: 40px; /* Fixed width for buttons */
+    height: 40px; /* Consistent height */
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #228B22;
-    border: none;
     color: white;
+    border: none;
     border-radius: 4px;
     font-size: 1.2rem;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .quantity-controls button:hover {
-    background-color: #1B6B1B;
-    border-color: #1B6B1B;
+    background-color: #1B6B1B; /* Darker green on hover */
 }
 
 .quantity-controls input {
-    width: 100px;
+    width: 60px; /* Adjusted width for better alignment */
     text-align: center;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 5px;
     padding: 0.5rem;
+    height: 40px; /* Consistent height */
 }
 
 /* Add to Cart button */
 .add-to-cart {
+    padding: 1rem;
     background-color: #228B22;
     color: white;
     border: none;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    border-radius: 4px;
+    border-radius: 5px;
+    font-size: 1.1rem;
     cursor: pointer;
-    margin-bottom: 1rem;
+    text-align: center;
+    margin-top: 0.5rem; /* Add margin for spacing */
+    flex: 1; /* Ensure it takes available space */
+    transition: background-color 0.3s ease;
 }
 
 .add-to-cart:hover {
-    background-color: #1B6B1B;
+    background-color: #1B6B1B; /* Darker green on hover */
 }
 
 /* Checkout button */
 .checkout-button {
-    padding: 0.75rem 1.5rem;
+    padding: 1rem;
     background-color: #228B22;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     font-size: 1.1rem;
     cursor: pointer;
     text-align: center;
-    flex: 1; /* Makes the button take up available space if needed */
+    flex: 1; /* Makes the button take up available space */
+    transition: background-color 0.3s ease;
 }
 
 .checkout-button:hover {
-    background-color: #1B6B1B;
+    background-color: #1B6B1B; /* Darker green on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .product-page {
+        flex-direction: column;
+    }
+    .product-image,
+    .product-details {
+        max-width: 100%;
+    }
 }
