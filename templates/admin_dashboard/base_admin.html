@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin_dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="d-flex">
+    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light text-dark" style="width: 280px; height: 100vh;">        <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-light text-decoration-none">
+            <i class="bi bi-tree-fill me-2" style="font-size: 32px;"></i>
+            <span class="fs-4">Admin Dashboard</span>
+        </a>
+        <hr class="bg-light">
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="{% url 'admin_dashboard:dashboard' %}" 
+                   class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                    <i class="bi bi-speedometer2 me-2"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'admin_dashboard:orders' %}" 
+                   class="nav-link link-light {% if 'orders' in request.path %}active{% endif %}">
+                    <i class="bi bi-table me-2"></i>
+                    Orders
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'admin_dashboard:all_products' %}" 
+                   class="nav-link link-light {% if 'Products' in request.path %}active{% endif %}">
+                    <i class="bi bi-grid me-2"></i>
+                    Products
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'admin_dashboard:sellers' %}" 
+                   class="nav-link link-light {% if request.resolver_match.url_name == 'sellers' %}active{% endif %}">
+                    <i class="bi bi-people me-2"></i>
+                    Sellers
+                </a>
+            </li>
+        </ul>
+        <hr class="bg-light">
+    </div>
+
+    <div class="flex-grow-1 p-3">
+        {% block admin_content %}{% endblock %}
+    </div>
+</div>              
+{% endblock %}

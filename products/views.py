@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from django.views.generic import ListView
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import ProductForm
@@ -68,6 +69,12 @@ def edit_product(request, product_id):
         'form': form,
         'product': product
     })
+
+@login_required
+def delete_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id, seller=request.user)
+    product.delete()
+    return redirect('products:seller_products')  # Redirect back to the seller products page
 
 class BuyerDashboardView(View):
     def get(self, request):

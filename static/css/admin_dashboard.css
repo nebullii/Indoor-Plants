@@ -1,0 +1,195 @@
+/* Sidebar Base */
+.d-flex.flex-column.flex-shrink-0.p-3.bg-light {
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+    background-color: #f8f9fa; /* Light background */
+    border-right: 1px solid #dee2e6; /* Light border */
+}
+
+/* Brand/Logo Area */
+.link-dark.text-decoration-none i {
+    color: #28a745; /* Green color for logo */
+}
+
+/* Navigation Links */
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px; /* Increased padding for better touch targets */
+    color: #333; /* Dark text color for better contrast */
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+}
+
+.nav-link.active {
+    background-color: #007bff; /* Active link color */
+    color: #ffffff; /* White text for active link */
+}
+
+.nav-link:hover {
+    background-color: rgba(0, 123, 255, 0.1); /* Light hover effect */
+    color: #007bff; /* Change text color on hover */
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #3498db; /* Change color on hover */
+}
+
+/* Main Content Area */
+.flex-grow-1 {
+    background: #ecf0f1; /* Light background for main content */
+    min-height: 100vh;
+}
+
+/* Table Styles */
+.table {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.table th {
+    background: #f8f9fa;
+    font-weight: 500;
+    color: #444;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+/* Card Styles */
+.card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background: white;
+    border-bottom: 1px solid #dee2e6;
+    padding: 1rem 1.25rem;
+}
+
+/* Horizontal Rules */
+hr {
+    margin: 1rem 0;
+    color: inherit;
+    border: 0;
+    opacity: 0.25;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .d-flex.flex-column.flex-shrink-0.p-3.bg-dark {
+        width: 4.5rem !important;
+        padding: 0.5rem !important;
+    }
+    
+    .fs-4, .nav-link span {
+        display: none;
+    }
+    
+    .dropdown {
+        display: none;
+    }
+    
+    .nav-link {
+        padding: 0.5rem;
+        justify-content: center;
+    }
+    
+    .nav-link i {
+        margin: 0 !important;
+        font-size: 1.2rem;
+    }
+    
+    hr {
+        margin: 0.5rem 0;
+    }
+}
+
+/* Custom Scrollbar */
+.d-flex.flex-column.flex-shrink-0.p-3.bg-dark::-webkit-scrollbar {
+    width: 6px;
+}
+
+.d-flex.flex-column.flex-shrink-0.p-3.bg-dark::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.d-flex.flex-column.flex-shrink-0.p-3.bg-dark::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.d-flex.flex-column.flex-shrink-0.p-3.bg-dark::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Seller List Table Styles */
+.seller-table {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-top: 20px; /* Add some space above the table */
+}
+
+.seller-table th {
+    background: #f8f9fa; /* Light background for header */
+    font-weight: 500;
+    color: #444;
+    border-bottom: 2px solid #dee2e6; /* Bottom border for header */
+}
+
+.seller-table td {
+    vertical-align: middle; /* Center align the content */
+}
+
+/* Hover Effect for Table Rows */
+.seller-table tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.1); /* Light blue background on hover */
+}
+
+/* Badge Styles for Seller Status */
+.badge {
+    padding: 0.5em 0.75em; /* Padding for badges */
+    border-radius: 0.5em; /* Rounded corners */
+    font-size: 0.9em; /* Font size for badges */
+}
+
+/* Active Badge */
+.badge.bg-success {
+    background-color: #28a745; /* Green for active */
+    color: white; /* White text */
+}
+
+/* Inactive Badge */
+.badge.bg-danger {
+    background-color: #dc3545; /* Red for inactive */
+    color: white; /* White text */
+}
+
+/* Chart Styles */
+.chart-container {
+    position: relative;
+    width: 100%; /* Full width */
+    max-width: 600px; /* Set a maximum width */
+    height: 300px; /* Set a fixed height */
+    margin: 20px auto; /* Center the chart with some margin */
+}
+
+canvas {
+    width: 100% !important; /* Make canvas responsive */
+    height: 100% !important; /* Make canvas responsive */
+}

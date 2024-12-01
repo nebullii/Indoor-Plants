@@ -9,6 +9,7 @@ class CustomUser(AbstractUser):
        ('ADMIN', 'Admin'),
    )
    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='BUYER')
+   is_verified = models.BooleanField(default=False) 
 
    def is_buyer(self):
        return self.role == 'BUYER'

@@ -56,4 +56,13 @@
         {% endfor %}
     </div>
 </div>
+
+<script>
+    function deleteProduct(productId) {
+        if (confirm("Are you sure you want to delete this product?")) {
+            // Redirect to the delete URL
+            window.location.href = "{% url 'products:delete_product' 0 %}".replace('0', productId);
+        }
+    }
+    </script>
 {% endblock %}

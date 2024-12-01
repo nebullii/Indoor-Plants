@@ -43,14 +43,14 @@
             <div class="purchase-section">
                 <form action="{% url 'cart:add_to_cart' product.id %}" method="POST" class="d-flex align-items-center mb-3">
                     {% csrf_token %}
-                    <div class="quantity-controls flex-grow-1">
-                        <button type="button" class="btn btn-success btn-lg" onclick="decrementQuantity()">-</button>
-                        <input type="number" name="quantity" id="quantity" value="1" min="1" class="form-control mx-2">
-                        <button type="button" class="btn btn-success btn-lg" onclick="incrementQuantity()">+</button>
+                    <div class="quantity-controls">
+                        <button type="button" onclick="decrementQuantity()">-</button>
+                        <input type="number" name="quantity" id="quantity" value="1" min="1" class="form-control">
+                        <button type="button" onclick="incrementQuantity()">+</button>
                     </div>
-                    <button type="submit" class="btn btn-success btn-lg">Add to Cart</button>
+                    <button type="submit" class="btn add-to-cart">Add to Cart</button>
                 </form>
-                <button class="btn btn-success btn-lg btn-block">Checkout with Stripe</button>
+                <a href="{% url 'payments:checkout' %}" class="btn checkout-button">Checkout with Stripe</a>
             </div>
 
             {% if messages %}
