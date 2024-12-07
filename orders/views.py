@@ -4,6 +4,9 @@ from django.contrib import messages
 from .models import ShippingAddress, Order
 from .forms import ShippingAddressForm
 from decimal import Decimal
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 @login_required
 def shipping_address_list(request):
@@ -107,6 +110,7 @@ def create_order(request):
             
             cart.cartitem_set.all().delete()
             messages.success(request, 'Order placed successfully!')
+
             return redirect('orders:order_success', order_id=order.id)
             
         except Exception as e:
@@ -114,6 +118,7 @@ def create_order(request):
             return redirect('cart:view_cart')
     
     return redirect('orders:order_review')
+
 
 @login_required
 def order_list(request):

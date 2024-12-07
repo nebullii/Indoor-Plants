@@ -4,11 +4,13 @@ body {
     color: #333;
     margin: 0;
     padding: 0;
+    margin-top: 60px;
 }
 /* Header Styles */
 .navbar {
     padding: 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
 }
 
 .navbar-brand {
@@ -223,6 +225,7 @@ footer ul li a:hover {
     margin-left: -30px;     /* Negative margin to offset container padding */
     margin-right: -30px;    /* Negative margin to offset container padding */
     width: calc(100% + 60px); /* Full width accounting for container padding */
+    
 }
 
 @media (min-width: 1400px) {
@@ -235,12 +238,34 @@ footer ul li a:hover {
     .custom-container {
         padding-right: 15px;  /* Less padding on mobile */
         padding-left: 15px;
+        
     }
     
     .hero-section {
         margin-left: -15px;
         margin-right: -15px;
         width: calc(100% + 30px);
+        
     }
 }
 
+/* Cart Icon Styles */
+.cart-icon {
+    position: relative;
+    display: inline-block;
+    padding: 10px; /* Adjust padding as needed */
+}
+
+.cart-icon .cart-count {
+    position: absolute;
+    top: -5px; /* Adjust position */
+    right: -10px; /* Adjust position */
+    background-color: red; /* Badge background color */
+    color: white; /* Badge text color */
+    border-radius: 50%; /* Make it circular */
+    padding: 2px 6px; /* Adjust padding for the badge */
+    font-size: 12px; /* Adjust font size */
+    font-weight: bold; /* Make the text bold */
+}
+
+/*seller_dashboard */

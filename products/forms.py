@@ -40,3 +40,6 @@ class ProductForm(forms.ModelForm):
             'id': 'product-hot-selling',
             'name': 'product_hot_selling'
         })
+
+class SearchForm(forms.Form):
+    query = forms.CharField(label='Search for plants', max_length=100)
