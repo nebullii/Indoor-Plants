@@ -2,15 +2,26 @@ from django.core.paginator import Paginator
 from django.views.generic import ListView
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .forms import ProductForm
+from .forms import ProductForm, SearchForm
 from .models import Product
 from orders.models import Order
 from django.views import View
 
 def home(request):
+    form = SearchForm()
     featured_products = Product.objects.filter(featured=True).order_by('-created_at')[:4]
     hot_selling_products = Product.objects.filter(hot_selling=True).order_by('-created_at')[:4]
+
+    # Handle search query
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            featured_products = Product.objects.filter(name__icontains=query)  # Update this line
+            hot_selling_products = Product.objects.filter(name__icontains=query)  # Update this line
+
     context = {
+        'form': form,
         'featured_products': featured_products,
         'hot_selling_products': hot_selling_products,
     }
@@ -21,15 +32,22 @@ def product_detail(request, product_id):
     return render(request, 'products/product_detail.html', {'product': product})
 
 def product_gallery(request):
-    # Fetch all products from the database
+    form = SearchForm()  # Initialize the search form
     product_list = Product.objects.all().order_by('-created_at')
-    
+
+    # Handle search query
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            product_list = product_list.filter(name__icontains=query)  # Filter products based on the search query
+
     # Set up pagination
-    paginator = Paginator(product_list, 8)  # Show 6 products per page
+    paginator = Paginator(product_list, 8)  # Show 8 products per page
     page_number = request.GET.get('page')
     products = paginator.get_page(page_number)
 
-    return render(request, 'products/gallery.html', {'products': products})
+    return render(request, 'products/gallery.html', {'form': form, 'products': products})
 
 @login_required
 def add_product(request):
@@ -80,3 +98,15 @@ class BuyerDashboardView(View):
     def get(self, request):
         orders = Order.objects.filter(user=request.user)  # Fetch orders for the logged-in user
         return render(request, 'buyer_dashboard.html', {'orders': orders})
+    
+def search_plants(request):
+    form = SearchForm()
+    results = []
+
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            results = Product.objects.filter(name__icontains=query)  # Case-insensitive search
+
+    return render(request, 'products/search_results.html', {'form': form, 'results': results})
