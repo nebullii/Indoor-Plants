@@ -28,11 +28,7 @@ SECRET_KEY = "django-insecure-b+a8ww6yovgjwwsvq4&lihc=&ch3^mimfq22cxrix_&wx=2dn2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    "indoor-plant-405v.onrender.com",
-    "localhost",
-    "127.0.0.1:8000",
-    ]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
