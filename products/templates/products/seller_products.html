@@ -3,31 +3,42 @@
 {% block title %}My Products - Indoor Plant Store{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2 class="mb-4">My Products</h2>
-    
-    <div class="row">
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col">
+            <h2>My Products</h2>
+            <a href="{% url 'add_product' %}" class="btn btn-primary">Add New Product</a>
+        </div>
+    </div>
+
+    {% if products %}
+    <div class="row row-cols-1 row-cols-md-3 g-4">
         {% for product in products %}
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    {% if product.image %}
-                        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-                    {% endif %}
-                    <div class="card-body">
-                        <h5 class="card-title">{{ product.name }}</h5>
-                        <p class="card-text">{{ product.description|truncatewords:20 }}</p>
-                        <p class="card-text"><strong>Price: ${{ product.price }}</strong></p>
-                        <a href="#" class="btn btn-primary btn-sm">Edit</a>
-                        <a href="#" class="btn btn-danger btn-sm">Delete</a>
+        <div class="col">
+            <div class="card h-100">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">{{ product.description|truncatewords:20 }}</p>
+                    <p class="card-text"><strong>Price: ${{ product.price }}</strong></p>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'edit_product' product.id %}" class="btn btn-primary">Edit Product</a>
+                        <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-secondary">View Details</a>
                     </div>
                 </div>
+                <div class="card-footer">
+                    <small class="text-muted">Last updated: {{ product.updated_at|date:"F j, Y" }}</small>
+                </div>
             </div>
-        {% empty %}
-            <div class="col-12">
-                <p>You haven't added any products yet.</p>
-                <a href="{% url 'add_product' %}" class="btn btn-success">Add Your First Product</a>
-            </div>
+        </div>
         {% endfor %}
     </div>
+    {% else %}
+    <div class="alert alert-info" role="alert">
+        You haven't added any products yet. Click the "Add New Product" button to get started!
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
