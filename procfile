@@ -1,2 +1,2 @@
-web: gunicorn indoor_plant.wsgi:application
+web: gunicorn indoor_plant.wsgi:application --timeout 120
 
