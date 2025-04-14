@@ -9,7 +9,7 @@
     
     <div class="row">
         {% for product in hot_selling_products %}
-        <div class="col-md-3 mb-4">
+        <div class="col-md-2-4 mb-4">
             <div class="card h-100 shadow-sm">
                 {% if product.image %}
                 <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
