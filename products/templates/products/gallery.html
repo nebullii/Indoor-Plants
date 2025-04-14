@@ -33,17 +33,17 @@
                         View Details
                     </a>
                     <form action="{% url 'cart:add_to_cart' product.id %}" 
-                    method="POST" 
-                    class="d-inline add-to-cart-form" 
-                    data-product-id="{{ product.id }}">
-                  {% csrf_token %}
-                  <input type="hidden" name="quantity" value="1">
-                  <button type="submit" 
-                          class="btn btn-success btn-sm add-to-cart-button" 
-                          aria-label="Add {{ product.name }} to cart">
-                      Add to Cart
-                  </button>
-              </form>
+                          method="POST" 
+                          class="d-inline add-to-cart-form" 
+                          data-product-id="{{ product.id }}">
+                        {% csrf_token %}
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" 
+                                class="btn btn-success btn-sm add-to-cart-button" 
+                                aria-label="Add {{ product.name }} to cart">
+                            Add to Cart
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -80,5 +80,45 @@
         </span>
     </div>
 </div>
+{% endblock %}
 
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const forms = document.querySelectorAll('.add-to-cart-form');
+        
+        forms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const productName = this.closest('.card').querySelector('.card-title').textContent;
+                
+                fetch(this.action, {
+                    method: 'POST',
+                    body: new FormData(this),
+                    headers: {
+                        'X-CSRFToken': this.querySelector('[name=csrfmiddlewaretoken]').value
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showToast(`${productName} added to cart successfully!`);
+                        // Update cart count if it exists
+                        const cartCount = document.querySelector('.cart-count');
+                        if (cartCount) {
+                            const currentCount = parseInt(cartCount.textContent) || 0;
+                            cartCount.textContent = currentCount + 1;
+                        }
+                    } else {
+                        showToast(data.message || 'Error adding to cart', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showToast('Error adding to cart', 'error');
+                });
+            });
+        });
+    });
+</script>
 {% endblock %}

@@ -10,37 +10,46 @@
 {% block content %}
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h2">Shopping Cart</h1>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb bg-transparent p-0 mb-0">
-                <li class="breadcrumb-item"><a href="{% url 'products:product_gallery' %}">Home</a></li>
-                <li class="breadcrumb-item active">Cart</li>
-            </ol>
-        </nav>
+        <h1 class="h2 text-dark">Shopping Cart</h1>
+        <div class="d-flex align-items-center">
+            <a href="{% url 'home' %}" class="btn btn-outline-success mr-3">
+                <i class="fas fa-home"></i> Back to Home
+            </a>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent p-0 mb-0">
+                    <li class="breadcrumb-item"><a href="{% url 'products:product_gallery' %}" class="text-dark">Products</a></li>
+                    <li class="breadcrumb-item active text-dark">Cart</li>
+                </ol>
+            </nav>
+        </div>
     </div>
 
     {% if cart_items %}
         <div class="cart-table">
             <div class="cart-header">
                 <div class="row align-items-center">
-                    <div class="col-md-6">Product</div>
-                    <div class="col-md-2">Price</div>
-                    <div class="col-md-2">Quantity</div>
-                    <div class="col-md-1">Total</div>
-                    <div class="col-md-1">Actions</div>
+                    <div class="col-md-6 text-dark">Product</div>
+                    <div class="col-md-2 text-dark">Price</div>
+                    <div class="col-md-2 text-dark">Quantity</div>
+                    <div class="col-md-1 text-dark">Total</div>
+                    <div class="col-md-1 text-dark">Actions</div>
                 </div>
             </div>
 
             {% for item in cart_items %}
-            <div class="cart-item" data-price="{{ item.product.price }}">
+            <div class="cart-item" data-item-id="{{ item.id }}" data-price="{{ item.product.price }}">
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <div class="product-info">
-                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="cart-item-image">
-                            <span class="product-name">{{ item.product.name }}</span>
+                            <a href="{% url 'products:product_detail' item.product.id %}" class="product-link">
+                                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="cart-item-image">
+                            </a>
+                            <a href="{% url 'products:product_detail' item.product.id %}" class="product-name text-dark">
+                                {{ item.product.name }}
+                            </a>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2 text-dark">
                         $<span class="item-price">{{ item.product.price }}</span>
                     </div>
                     <div class="col-md-2">
@@ -54,7 +63,7 @@
                             <button type="button" class="btn btn-sm btn-outline-secondary increase-qty" data-item-id="{{ item.id }}">+</button>
                         </div>
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-1 text-dark">
                         $<span class="item-total">{{ item.get_total }}</span>
                     </div>
                     <div class="col-md-1">
@@ -70,16 +79,16 @@
                 <div class="row justify-content-end">
                     <div class="col-md-4">
                         <div class="summary-row">
-                            <span>Subtotal:</span>
-                            <span>$<span id="subtotal">{{ subtotal }}</span></span>
+                            <span class="text-dark">Subtotal:</span>
+                            <span class="text-dark">$<span id="subtotal">{{ subtotal }}</span></span>
                         </div>
                         <div class="summary-row">
-                            <span>Shipping:</span>
-                            <span>$<span id="shipping">{{ shipping_cost }}</span></span>
+                            <span class="text-dark">Shipping:</span>
+                            <span class="text-dark">$<span id="shipping">{{ shipping_cost }}</span></span>
                         </div>
                         <div class="summary-row total">
-                            <span>Total:</span>
-                            <span>$<span id="total">{{ total }}</span></span>
+                            <span class="text-dark">Total:</span>
+                            <span class="text-dark">$<span id="total">{{ total }}</span></span>
                         </div>
                     </div>
                 </div>
@@ -97,8 +106,8 @@
     {% else %}
         <div class="empty-cart">
             <i class="fas fa-shopping-cart"></i>
-            <h3>Your cart is empty</h3>
-            <p>Looks like you haven't added any plants to your cart yet.</p>
+            <h3 class="text-dark">Your cart is empty</h3>
+            <p class="text-dark">Looks like you haven't added any plants to your cart yet.</p>
             <a href="{% url 'products:product_gallery' %}" class="btn btn-success">
                 Start Shopping
             </a>
@@ -143,7 +152,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Remove item
     document.querySelectorAll('.remove-item').forEach(button => {
         button.addEventListener('click', function() {
-            removeItem(this.dataset.itemId);
+            const itemId = this.dataset.itemId;
+            const itemRow = document.querySelector(`.cart-item[data-item-id="${itemId}"]`);
+            
+            // Show loading state
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            
+            removeItem(itemId, itemRow);
         });
     });
 
@@ -170,19 +186,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('subtotal').textContent = data.cart_subtotal;
                 document.getElementById('total').textContent = data.cart_total;
 
-                // Show success message
-                //showMessage('Cart updated successfully', 'success');
+                showToast('Cart updated successfully');
             } else {
-                showMessage(data.message || 'Error updating cart', 'error');
+                showToast(data.message || 'Error updating cart', 'error');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            showMessage('Error updating cart', 'error');
+            showToast('Error updating cart', 'error');
         });
     }
 
-    function removeItem(itemId) {
+    function removeItem(itemId, itemRow) {
         fetch(`/cart/remove/${itemId}/`, {
             method: 'POST',
             headers: {
@@ -193,37 +208,32 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Remove the item row
-                const itemRow = document.querySelector(`.cart-item[data-item-id="${itemId}"]`);
-                console.log('Removing item:', itemId);
-                itemRow.remove();
-                
-                // Update cart totals
-                document.getElementById('subtotal').textContent = data.cart_subtotal;
-                document.getElementById('total').textContent = data.cart_total;
+                // Remove the item row with animation
+                itemRow.style.opacity = '0';
+                itemRow.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => {
+                    itemRow.remove();
+                    
+                    // Update cart totals
+                    document.getElementById('subtotal').textContent = data.cart_subtotal;
+                    document.getElementById('total').textContent = data.cart_total;
 
-                // Show success message
-                showMessage('Item removed from cart', 'success');
+                    // Show success message
+                    showToast('Item removed from cart');
 
-                // Reload if cart is empty
-                if (data.cart_count === 0) {
-                    location.reload();
-                }
+                    // Reload if cart is empty
+                    if (data.cart_count === 0) {
+                        location.reload();
+                    }
+                }, 300);
             } else {
-                showMessage(data.message || 'Error removing item', 'error');
+                showToast(data.message || 'Error removing item', 'error');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            showMessage('Error removing item', 'error');
+            showToast('Error removing item', 'error');
         });
-    }
-
-    function showMessage(message, type) {
-        const messageBox = document.getElementById('message-box');
-        messageBox.textContent = message;
-        messageBox.className = `alert alert-${type}`;
-        messageBox.style.display = 'block';
     }
 });
 </script>
