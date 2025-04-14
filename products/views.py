@@ -10,8 +10,8 @@ from django.views import View
 
 def home(request):
     form = SearchForm()
-    featured_products = Product.objects.filter(featured=True).order_by('-created_at')[:4]
-    hot_selling_products = Product.objects.filter(hot_selling=True).order_by('-created_at')[:4]
+    featured_products = Product.objects.filter(featured=True).order_by('-created_at')[:5]
+    hot_selling_products = Product.objects.filter(hot_selling=True).order_by('-created_at')[:5]
 
     # Handle search query
     if 'query' in request.GET:

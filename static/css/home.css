@@ -13,11 +13,9 @@
 /* Hero Section */
 .hero-section {
     background: linear-gradient(
-        rgba(248, 249, 250, 0.95),  /* Bootstrap bg-light #f8f9fa */
-        rgba(248, 249, 250, 0.85)   /* Bootstrap bg-light #f8f9fa */
-    ), url('../images/hero-bg.jpg');
-    background-size: cover;
-    background-position: center;
+        rgba(248, 249, 250, 0.95),
+        rgba(248, 249, 250, 0.85)
+    );
     min-height: 350px;
     display: flex;
     align-items: center;
@@ -260,5 +258,29 @@
 @media (min-width: 1200px) {
     .container {
         max-width: 1140px;
+    }
+}
+
+/* Custom column width for 5 products per row */
+.col-md-2-4 {
+    flex: 0 0 20%;
+    max-width: 20%;
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+@media (max-width: 768px) {
+    .col-md-2-4 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 576px) {
+    .col-md-2-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
     }
 }
