@@ -12,7 +12,6 @@
 <div class="hero-section">
     <div class="hero-content">
         <h3 class="hero-title">Your one-stop shop for beautiful plants!</h3>
-        <!-- <p class="hero-subtitle">Your one-stop shop for beautiful indoor plants</p> -->
         
         <!-- Plant Care Tips Box -->
         <div class="care-tips-box">
@@ -43,7 +42,7 @@
         
         <div class="hero-buttons">
             <a href="{% url 'product_gallery' %}" class="btn btn-success btn-lg">Shop Now</a>
-            <a href="https://www.houseplantjournal.com" target="_blank" rel="noopener noreferrer"class="btn btn-outline-light btn-lg ms-3">Plant Care Guide</a>
+            <a href="https://www.houseplantjournal.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline-light btn-lg ms-3">Plant Care Guide</a>
         </div>
     </div>
 </div>
@@ -53,4 +52,19 @@
 
 <!-- Include Hot Selling Products Component -->
 {% include 'products/hot_selling_products.html' %}
+
+<style>
+    .icon-container {
+        transition: transform 0.3s ease;
+    }
+    .icon-container:hover {
+        transform: scale(1.1);
+    }
+    .card {
+        transition: transform 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+    }
+</style>
 {% endblock %}

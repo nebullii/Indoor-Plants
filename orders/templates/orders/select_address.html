@@ -26,8 +26,9 @@
                     <p class="mb-3">{{ address.country }}</p>
                     <p class="mb-1">Phone: {{ address.phone_number }}</p>
                     
-                    <form method="post" action="{% url 'orders:proceed_to_payment' address.id %}">
+                    <form method="post" action="{% url 'payments:checkout' %}">
                         {% csrf_token %}
+                        <input type="hidden" name="address_id" value="{{ address.id }}">
                         <button type="submit" class="btn btn-success btn-block mt-3">
                             Deliver to this address
                         </button>

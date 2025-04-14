@@ -13,18 +13,18 @@
 /* Hero Section */
 .hero-section {
     background: linear-gradient(
-        rgba(255, 255, 255, 0.95),  /* More white at top */
-        rgba(255, 255, 255, 0.85)   /* Slightly transparent white at bottom */
+        rgba(248, 249, 250, 0.95),  /* Bootstrap bg-light #f8f9fa */
+        rgba(248, 249, 250, 0.85)   /* Bootstrap bg-light #f8f9fa */
     ), url('../images/hero-bg.jpg');
     background-size: cover;
     background-position: center;
-    min-height: 350px;  /* Reduced height for cleaner look */
+    min-height: 350px;
     display: flex;
     align-items: center;
     text-align: center;
-    color: #333;
+    color: #475569;  /* Slate grey 600 */
     padding: 2rem 0;
-    border-bottom: 1px solid rgba(40, 167, 69, 0.1);  /* Subtle green border */
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2);  /* Slate grey 400 */
     margin-top: 70px;
 }
 
@@ -38,6 +38,7 @@
     font-weight: 700;
     margin-bottom: 1rem;
     animation: appear 1s ease-out 0.3s backwards;
+    color: #334155;  /* Slate grey 700 */
 }
 
 .hero-subtitle {
@@ -48,19 +49,20 @@
 
 /* Care Tips Box */
 .care-tips-box {
-    background: #ffffff;  /* More solid white */
+    background: rgba(248, 250, 252, 0.9);  /* Slate grey 50 */
     border-radius: 10px;
     padding: 1.5rem;
     margin: 1.5rem auto;
     max-width: 1000px;
-    border: 1px solid #0c0c0c;  /* Very subtle border */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);  /* Lighter shadow */
+    border: 1px solid rgba(148, 163, 184, 0.2);  /* Slate grey 400 */
+    box-shadow: 0 2px 8px rgba(100, 116, 139, 0.05);  /* Slate grey 500 */
 }
 
 .tip-card {
     padding: 1.2rem;
     transition: transform 0.3s ease;
-    color: #333;
+    color: #475569;  /* Slate grey 600 */
+    text-align: center;
 }
 
 .tip-card:hover {
@@ -125,76 +127,65 @@
 }
 
 /* Product Cards */
-.product-card {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    background: white;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 2rem;
+.card {
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.product-card:hover {
+.card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.product-image {
-    width: 100%;
-    height: 280px;
-    overflow: hidden;
-    position: relative;
-}
-
-.product-image img {
-    width: 100%;
-    height: 100%;
+.card-img-top {
+    border-radius: 8px 8px 0 0;
+    height: 200px;
     object-fit: cover;
-    transition: transform 0.5s ease;
 }
 
-.product-card:hover .product-image img {
-    transform: scale(1.1);
+.card-body {
+    padding: 1.25rem;
 }
 
-.product-info {
-    padding: 1rem;
-    text-align: center;
-    background: white;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.product-info h5 {
+.card-title {
     font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-    color: #333;
-}
-
-.price {
-    color: #28a745;
     font-weight: 600;
-    margin: 0.5rem 0;
-    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+}
+
+.text-success {
+    color: #28a745 !important;
 }
 
 .btn-outline-success {
-    border-color: #28a745;
     color: #28a745;
+    border-color: #28a745;
     transition: all 0.3s ease;
-    padding: 0.5rem 1rem;
-    margin-top: 1rem;
 }
 
 .btn-outline-success:hover {
     background-color: #28a745;
     color: white;
-    transform: translateY(-2px);
+}
+
+/* View All Link */
+.text-success.text-decoration-none {
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.text-success.text-decoration-none:hover {
+    text-decoration: underline !important;
+}
+
+.text-success.text-decoration-none i {
+    transition: transform 0.3s ease;
+}
+
+.text-success.text-decoration-none:hover i {
+    transform: translateX(5px);
 }
 
 /* Badges */

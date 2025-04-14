@@ -31,7 +31,7 @@ SECRET_KEY = "django-insecure-b+a8ww6yovgjwwsvq4&lihc=&ch3^mimfq22cxrix_&wx=2dn2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['nevus.pythonanywhere.com', 'localhost', '127.0.0.1', '*']
 
 
 # Application definition
@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "accounts",  # Use this simple form for now
+    "accounts",  # Simplified app inclusion
     "indoor_plant",
     'widget_tweaks',
     'products',
@@ -89,14 +89,20 @@ WSGI_APPLICATION = "indoor_plant.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 # Database settings
-if os.environ.get('DATABASE_URL'):
+if os.environ.get('PYTHONANYWHERE_DOMAIN'):
+    # PythonAnywhere database settings
     DATABASES = {
-        'default': dj_database_url.config(
-            default=os.environ.get('postgresql://indoor_plant_user:9i4hIQSHoHmmZuv1manS9RAfoOaGjjq2@dpg-csp4he23esus73et4kg0-a/indoor_plant'),
-            conn_max_age=600
-        )
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'nevus$default',
+            'USER': 'nevus',
+            'PASSWORD': 'pythonAnywhere',
+            'HOST': 'nevus.mysql.pythonanywhere-services.com',
+            'PORT': '3306',
+        }
     }
 else:
+    # Local database settings
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
@@ -156,16 +162,15 @@ LOGOUT_REDIRECT_URL = "home"  # redirect to home after logout
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-    ]
+    os.path.join(BASE_DIR, 'static'),
+]
 
 # Media files (User-uploaded files)
 MEDIA_URL = '/media/'
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # This is where uploaded files will be stored
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LOGOUT_REDIRECT_URL = 'home'
 
@@ -176,6 +181,14 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLIC_KEY','pk_test_51QMy07GUxl6r0dvOeQveEr8x1j8rJ3Oqc7xXg6ZccyXjZ2qENsYwgivBMcApSNmBWIISta49qn5zSnnQA4EnWND1005CJcPMH0')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', 'sk_test_51QMy07GUxl6r0dvOB0VSqJaoNaMQHr1NPqeD3Ow04dLAHOSzLPF3xVtIJbrPiTvRG4mmz6syiAvmsTB18kgXTU1X00jbncuGiQ')
+
+# Security settings
+SECURE_SSL_REDIRECT = False  # Disable SSL redirect for free tier
+SESSION_COOKIE_SECURE = False  # Disable secure cookies for free tier
+CSRF_COOKIE_SECURE = False  # Disable secure CSRF cookies for free tier
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
 
 if not STRIPE_PUBLISHABLE_KEY or not STRIPE_SECRET_KEY:
     raise ImproperlyConfigured('Stripe API keys are not set in environment variables')
