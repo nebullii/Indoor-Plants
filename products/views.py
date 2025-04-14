@@ -2,6 +2,7 @@ from django.core.paginator import Paginator
 from django.views.generic import ListView
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 from .forms import ProductForm, SearchForm
 from .models import Product
 from orders.models import Order
@@ -17,8 +18,8 @@ def home(request):
         form = SearchForm(request.GET)
         if form.is_valid():
             query = form.cleaned_data['query']
-            featured_products = Product.objects.filter(name__icontains=query)  # Update this line
-            hot_selling_products = Product.objects.filter(name__icontains=query)  # Update this line
+            featured_products = Product.objects.filter(name__icontains=query)
+            hot_selling_products = Product.objects.filter(name__icontains=query)
 
     context = {
         'form': form,
@@ -32,18 +33,16 @@ def product_detail(request, product_id):
     return render(request, 'products/product_detail.html', {'product': product})
 
 def product_gallery(request):
-    form = SearchForm()  # Initialize the search form
+    form = SearchForm()
     product_list = Product.objects.all().order_by('-created_at')
 
-    # Handle search query
     if 'query' in request.GET:
         form = SearchForm(request.GET)
         if form.is_valid():
             query = form.cleaned_data['query']
-            product_list = product_list.filter(name__icontains=query)  # Filter products based on the search query
+            product_list = product_list.filter(name__icontains=query)
 
-    # Set up pagination
-    paginator = Paginator(product_list, 8)  # Show 8 products per page
+    paginator = Paginator(product_list, 8)
     page_number = request.GET.get('page')
     products = paginator.get_page(page_number)
 
@@ -57,7 +56,7 @@ def add_product(request):
             product = form.save(commit=False)
             product.seller = request.user
             product.save()
-            return redirect('products:product_gallery')  # Add namespace
+            return redirect('products:product_gallery')
     else:
         form = ProductForm()
     
@@ -65,7 +64,6 @@ def add_product(request):
 
 @login_required
 def seller_products(request):
-    # Get all products belonging to the current logged-in vendor
     products = Product.objects.filter(seller=request.user)
     return render(request, 'products/seller_products.html', {
         'products': products
@@ -73,7 +71,10 @@ def seller_products(request):
 
 @login_required
 def edit_product(request, product_id):
-    product = get_object_or_404(Product, id=product_id, seller=request.user)
+    product = get_object_or_404(Product, id=product_id)
+    
+    if product.seller != request.user:
+        return HttpResponseForbidden("You don't have permission to edit this product.")
     
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance=product)
@@ -83,7 +84,7 @@ def edit_product(request, product_id):
     else:
         form = ProductForm(instance=product)
     
-    return render(request, 'products/add_product.html', {
+    return render(request, 'products/edit_product.html', {
         'form': form,
         'product': product
     })
@@ -92,11 +93,11 @@ def edit_product(request, product_id):
 def delete_product(request, product_id):
     product = get_object_or_404(Product, id=product_id, seller=request.user)
     product.delete()
-    return redirect('products:seller_products')  # Redirect back to the seller products page
+    return redirect('products:seller_products')
 
 class BuyerDashboardView(View):
     def get(self, request):
-        orders = Order.objects.filter(user=request.user)  # Fetch orders for the logged-in user
+        orders = Order.objects.filter(user=request.user)
         return render(request, 'buyer_dashboard.html', {'orders': orders})
     
 def search_plants(request):
@@ -107,6 +108,6 @@ def search_plants(request):
         form = SearchForm(request.GET)
         if form.is_valid():
             query = form.cleaned_data['query']
-            results = Product.objects.filter(name__icontains=query)  # Case-insensitive search
+            results = Product.objects.filter(name__icontains=query)
 
     return render(request, 'products/search_results.html', {'form': form, 'results': results})

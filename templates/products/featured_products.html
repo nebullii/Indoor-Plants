@@ -1,19 +1,23 @@
+<!-- Featured Products Section -->
 <div class="container mt-5">
-    <h2 class="section-title">Featured Plants</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-dark">Featured Plants</h2>
+        <a href="{% url 'products:product_gallery' %}" class="text-success text-decoration-none">
+            View All <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+    
     <div class="row">
         {% for product in featured_products %}
         <div class="col-md-3 mb-4">
-            <div class="product-card featured">
+            <div class="card h-100 shadow-sm">
                 {% if product.image %}
-                <div class="product-image">
-                    <div class="featured-badge">Featured</div>
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid">
-                </div>
+                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
                 {% endif %}
-                <div class="product-info">
-                    <h5>{{ product.name }}</h5>
-                    <p class="price">${{ product.price }}</p>
-                    <a href="{% url 'products:product_detail' product.id %}" class="btn btn-outline-success btn-sm">View Details</a>
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text text-success font-weight-bold">${{ product.price }}</p>
+                    <a href="{% url 'products:product_detail' product.id %}" class="btn btn-outline-success">View Details</a>
                 </div>
             </div>
         </div>

@@ -10,7 +10,7 @@
 
             <!-- Search Bar -->
             <div class="search-container mx-auto d-none d-lg-block">
-                <form class="form-inline" method="get" action="">
+                <form class="form-inline" method="get" action="{% url 'products:search' %}">
                     <div class="input-group" style="width: 600px;">
                         <input type="search" name="query" class="form-control" placeholder="Search plants..." aria-label="Search">
                         <div class="input-group-append">

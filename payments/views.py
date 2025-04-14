@@ -1,5 +1,5 @@
 import stripe
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
@@ -13,7 +13,20 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 @login_required
 def checkout(request):
     cart = Cart.objects.get(user=request.user)
-    shipping_address = ShippingAddress.objects.filter(user=request.user, is_default=True).first()
+    
+    if request.method == 'POST':
+        address_id = request.POST.get('address_id')
+        if address_id:
+            # Set the selected address as default
+            ShippingAddress.objects.filter(user=request.user).update(is_default=False)
+            shipping_address = get_object_or_404(ShippingAddress, id=address_id, user=request.user)
+            shipping_address.is_default = True
+            shipping_address.save()
+        else:
+            messages.warning(request, 'Please select a shipping address.')
+            return redirect('orders:shipping_address_select')
+    else:
+        shipping_address = ShippingAddress.objects.filter(user=request.user, is_default=True).first()
 
     if not shipping_address:
         messages.warning(request, 'Please add a shipping address first.')

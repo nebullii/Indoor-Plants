@@ -2,19 +2,21 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-from products.views import product_gallery, home  # Update this import
+from products.views import product_gallery, home
+from .views import update_from_github
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('accounts.urls')),
-    path('', home, name='home'),  # Update this line to use the home view
+    path('', home, name='home'),
     path('gallery/', product_gallery, name='product_gallery'),
     path('products/', include('products.urls', namespace='products')),
     path('cart/', include('cart.urls', namespace='cart')),
     path('orders/', include('orders.urls', namespace='orders')),
     path('payments/', include('payments.urls', namespace='payments')),
     path('admin-dashboard/', include('admin_dashboard.urls', namespace='admin_dashboard')),
+    path('update_from_github/', update_from_github, name='update_from_github'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Add static file serving for development
