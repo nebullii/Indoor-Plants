@@ -1,4 +1,4 @@
-# Indoor Plant Store
+<img width="1449" alt="image" src="https://github.com/user-attachments/assets/2c88f095-63d3-47b4-87e1-b0c4c5958bed" /># Indoor Plant Store
 
 A Django-based e-commerce platform for buying and selling indoor plants. This project is designed to help plant enthusiasts and small businesses easily manage and explore a curated collection of indoor plants—with a clean interface and seamless payment integration via Stripe.
 
@@ -118,19 +118,33 @@ A Django-based e-commerce platform for buying and selling indoor plants. This pr
 
 **Homepage Banner:**
 
-![Homepage Banner](https://github.com/user-attachments/assets/18460240-56d1-474c-a5b6-3c01eb365f00)
+![Homepage Banner](https://github.com/user-attachments/assets/4a4f4ac6-b067-4730-982c-401d2063f2c5)
 
 **Product Showcase:**
 
-![Product Showcase](https://github.com/user-attachments/assets/8d454edc-4697-485c-9b80-ca90a35da004)
+![Product Showcase](https://github.com/user-attachments/assets/893dad0b-47ea-45a6-b5b3-014eaeb8a13d)
 
-**User Dashboard:**
+**Product View:**
 
-![User Dashboard](https://github.com/user-attachments/assets/a666188f-0042-4c11-928e-f3310018d971)
+![Product View](https://github.com/user-attachments/assets/4a426b04-317d-4f90-82f3-3405060fa4c4)
+
+**Seller Dashboard:**
+
+![Seller Dashboard](https://github.com/user-attachments/assets/eba70b59-6dde-4ded-933b-a1f3be68cee8)
+
+**Seller Products:**
+
+![Seller Products](https://github.com/user-attachments/assets/b5740c00-3f16-4f97-a14c-07f036f749f1)
+
 
 **Cart View:**
 
-![Cart View](https://github.com/user-attachments/assets/5f6d5678-8135-4bc7-a25c-52184ee5a36c)
+![Cart View](https://github.com/user-attachments/assets/94da07a1-ac60-4c4d-924b-345792f18ec7)
+
+**Payment Page:**
+
+![Payment Page](https://github.com/user-attachments/assets/e29c3219-4a64-468a-8c6e-b26660da7621)
+
 
 ---
 
