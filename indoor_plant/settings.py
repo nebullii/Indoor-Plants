@@ -26,7 +26,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-b+a8ww6yovgjwwsvq4&lihc=&ch3^mimfq22cxrix_&wx=2dn2"
+SECRET_KEY = os.getenv("SECRET_KEY")
+SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
+GITHUB_WEBHOOK_SECRET = os.getenv("GITHUB_WEBHOOK_SECRET")
+
+STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -43,6 +48,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",  # Required for flatpages
+    "django.contrib.flatpages",  # Required for flatpages
     "accounts",  # Simplified app inclusion
     "indoor_plant",
     'widget_tweaks',
@@ -63,6 +70,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',  # Add this line
 ]
 
 ROOT_URLCONF = "indoor_plant.urls"
@@ -177,11 +185,6 @@ LOGOUT_REDIRECT_URL = 'home'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
-#Stripe Publishable key and Secret key 
-
-STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLIC_KEY','pk_test_51QMy07GUxl6r0dvOeQveEr8x1j8rJ3Oqc7xXg6ZccyXjZ2qENsYwgivBMcApSNmBWIISta49qn5zSnnQA4EnWND1005CJcPMH0')
-STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', 'sk_test_51QMy07GUxl6r0dvOB0VSqJaoNaMQHr1NPqeD3Ow04dLAHOSzLPF3xVtIJbrPiTvRG4mmz6syiAvmsTB18kgXTU1X00jbncuGiQ')
-
 # Security settings
 SECURE_SSL_REDIRECT = False  # Disable SSL redirect for free tier
 SESSION_COOKIE_SECURE = False  # Disable secure cookies for free tier
@@ -194,3 +197,6 @@ if not STRIPE_PUBLISHABLE_KEY or not STRIPE_SECRET_KEY:
     raise ImproperlyConfigured('Stripe API keys are not set in environment variables')
 
 SHIPPING_COST = 5.00
+
+# Add SITE_ID setting
+SITE_ID = 1
