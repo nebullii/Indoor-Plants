@@ -56,7 +56,8 @@ def add_product(request):
             product = form.save(commit=False)
             product.seller = request.user
             product.save()
-            return redirect('products:product_gallery')
+            form.save_m2m()  # For tags/categories if using ManyToMany
+            return redirect('products:seller_products')
     else:
         form = ProductForm()
     

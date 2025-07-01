@@ -1,45 +1,89 @@
 {% extends "base.html" %}
 {% load static %}
+{% load widget_tweaks %}
 
 {% block title %}{% if product %}Edit{% else %}Add{% endif %} Product{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
     <h2 class="text-center mb-4">{% if product %}Edit{% else %}Add New{% endif %} Product</h2>
-    <form method="post" enctype="multipart/form-data">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+    {% if form.errors %}
+      <div class="alert alert-danger">
+        <ul class="mb-0">
+          {% for field in form %}
+            {% for error in field.errors %}
+              <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+            {% endfor %}
+          {% endfor %}
+          {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
         {% csrf_token %}
         <div class="form-group mb-3">
-            <label for="name">Product Name</label>
-            {{ form.name }}
+            <label for="{{ form.name.id_for_label }}">Name</label>
+            {{ form.name|add_class:"form-control" }}
         </div>
         <div class="form-group mb-3">
-            <label for="description">Description</label>
-            {{ form.description }}
+            <label for="{{ form.description.id_for_label }}">Description</label>
+            {{ form.description|add_class:"form-control" }}
         </div>
         <div class="form-group mb-3">
-            <label for="price">Price</label>
-            {{ form.price }}
+            <label for="{{ form.price.id_for_label }}">Price</label>
+            {{ form.price|add_class:"form-control" }}
         </div>
         <div class="form-group mb-3">
-            <label for="image">Image</label>
-            {{ form.image }}
+            <label for="{{ form.stock.id_for_label }}">Stock</label>
+            {{ form.stock|add_class:"form-control" }}
         </div>
-        <div class="form-check mb-3">
-            {{ form.featured }}
-            <label class="form-check-label" for="id_featured">
-                Featured Product
-            </label>
+        <div class="form-group mb-3">
+            <label for="{{ form.category.id_for_label }}">Category</label>
+            {% if form.category.field.queryset.count == 0 %}
+                <select class="form-select" disabled>
+                    <option>No categories available</option>
+                </select>
+            {% else %}
+                {{ form.category|add_class:"form-select" }}
+            {% endif %}
         </div>
-        <div class="form-check mb-3">
-            {{ form.hot_selling }}
-            <label class="form-check-label" for="id_hot_selling">
-                Hot Selling Product
-            </label>
+        <div class="form-group mb-3">
+            <label for="{{ form.tags.id_for_label }}">Tags</label>
         </div>
-        <button type="submit" class="btn btn-success">
-            {% if product %}Update{% else %}Add{% endif %} Product
-        </button>
-        <a href="{% url 'products:seller_products' %}" class="btn btn-outline-secondary">Cancel</a>
+        <div class="form-group mb-3">
+            <label for="{{ form.status.id_for_label }}">Status</label>
+            {{ form.status|add_class:"form-select" }}
+        </div>
+        <div class="form-group mb-3">
+            <label for="{{ form.image.id_for_label }}">Image</label>
+            {{ form.image|add_class:"form-control-file" }}
+            {% if product and product.image %}
+                <div class="mt-2">
+                    <img src="{{ product.image.url }}" alt="Current Image" class="img-thumbnail" style="max-width: 200px;">
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group form-check mb-3">
+            {{ form.featured|add_class:"form-check-input" }}
+            <label class="form-check-label" for="{{ form.featured.id_for_label }}">Featured</label>
+        </div>
+        <div class="form-group form-check mb-3">
+            {{ form.hot_selling|add_class:"form-check-input" }}
+            <label class="form-check-label" for="{{ form.hot_selling.id_for_label }}">Hot Selling</label>
+        </div>
+        <div class="form-group form-check mb-3">
+            {{ form.in_stock|add_class:"form-check-input" }}
+            <label class="form-check-label" for="{{ form.in_stock.id_for_label }}">In Stock</label>
+        </div>
+        <!-- Add more fields as needed, e.g., bulk_discount, etc. -->
+        <button type="submit" class="btn btn-success">{% if product %}Update{% else %}Add{% endif %} Product</button>
     </form>
 </div>
 {% endblock %}

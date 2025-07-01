@@ -9,7 +9,7 @@
     
     <div class="row">
         {% for product in featured_products %}
-        <div class="col-md-2-4 mb-4">
+        <div class="col-md-2-4 mb-4 card-padding-x">
             <div class="card h-100 shadow-sm">
                 {% if product.image %}
                 <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
@@ -17,7 +17,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ product.name }}</h5>
                     <p class="card-text text-success font-weight-bold">${{ product.price }}</p>
-                    <a href="{% url 'products:product_detail' product.id %}" class="btn btn-outline-success">View Details</a>
+                    <a href="{% url 'products:product_detail' product.id %}" class="btn btn-outline-success btn-sm px-4 rounded-pill">View Details</a>
                 </div>
             </div>
         </div>

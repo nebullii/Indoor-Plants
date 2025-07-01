@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import ShippingAddress, Order
+from .models import ShippingAddress, Order, OrderItem
 from .forms import ShippingAddressForm
 from decimal import Decimal
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.contrib.admin.views.decorators import staff_member_required
 
 @login_required
 def shipping_address_list(request):
@@ -119,14 +120,9 @@ def create_order(request):
     
     return redirect('orders:order_review')
 
-
-@login_required
+@staff_member_required
 def order_list(request):
-    if request.user.is_staff:
-        orders = Order.objects.all().order_by('-created_at')
-    else:
-        orders = Order.objects.filter(user=request.user).order_by('-created_at')
-    
+    orders = Order.objects.all().order_by('-created_at')
     return render(request, 'orders/order_list.html', {'orders': orders})
 
 @login_required
@@ -182,3 +178,15 @@ def order_detail(request, order_id):
         order = get_object_or_404(Order, id=order_id, user=request.user)
     
     return render(request, 'orders/order_detail.html', {'order': order})
+
+@login_required
+def customer_order_list(request):
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'orders/order_list.html', {'orders': orders})
+
+@login_required
+def seller_order_list(request):
+    # Get all order IDs where the seller's products are present
+    order_ids = OrderItem.objects.filter(product__seller=request.user).values_list('order_id', flat=True).distinct()
+    orders = Order.objects.filter(id__in=order_ids).order_by('-created_at')
+    return render(request, 'orders/order_list.html', {'orders': orders})
