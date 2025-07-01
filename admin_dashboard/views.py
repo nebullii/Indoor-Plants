@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 from decimal import Decimal
 from django.db.models import Count
 from django.db.models.functions import TruncMonth
+from django.contrib.auth.decorators import login_required
 
 
 def is_admin_user(user):
@@ -51,25 +52,21 @@ def dashboard(request):
     }
     return render(request, 'admin_dashboard/dashboard.html', context)
 
-@user_passes_test(is_admin_user)
+@login_required
 def order_detail(request, order_id):
-    # Get the order with all related data
-    order = get_object_or_404(
-        Order.objects.select_related('user', 'shipping_address')
-                    .prefetch_related('orderitem_set__product'),
-        id=order_id
-    )
-    
-    context = {
-        'order': order,
-        'items': order.orderitem_set.all(),
-    }
-    return render(request, 'orders/details.html', context)
+    # For regular users, show only their own orders
+    if request.user.is_staff:
+        order = get_object_or_404(Order, id=order_id)
+    else:
+        order = get_object_or_404(Order, id=order_id, user=request.user)
+    return render(request, 'orders/order_detail.html', {'order': order})
 
 @user_passes_test(is_admin_user)
 def order_list(request):
-    # Get the latest 5 orders with related user and order items for efficient querying
-    orders = Order.objects.select_related('user').prefetch_related('orderitem_set').order_by('-created_at')[:5]
+    if request.user.is_superuser:
+        orders = Order.objects.all().order_by('-created_at')
+    else:
+        orders = Order.objects.filter(user=request.user).order_by('-created_at')
     
     # Prepare orders with their totals
     orders_with_totals = []

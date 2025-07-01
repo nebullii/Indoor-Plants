@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.shortcuts import redirect
 from django.contrib import messages
+from django.shortcuts import render
 
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
@@ -77,3 +78,11 @@ def subscribe(request):
                 print(e)
                 messages.error(request, "Oops! Subscription failed. Try again.")
         return redirect("/")
+
+def home(request):
+    featured_products = Product.objects.filter(featured=True)
+    hot_selling_products = Product.objects.filter(hot_selling=True)
+    return render(request, 'products/featured_products.html', {
+        'featured_products': featured_products,
+        'hot_selling_products': hot_selling_products,
+    })

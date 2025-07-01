@@ -35,11 +35,3 @@
         <p class="text-center text-muted mb-0">&copy; 2024 Indoor Plant Store. All rights reserved.</p>
     </div>
 </footer>
-
-{% if messages %}
-  <ul class="messages">
-    {% for message in messages %}
-      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-  </ul>
-{% endif %}

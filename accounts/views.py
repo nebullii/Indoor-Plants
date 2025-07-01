@@ -31,7 +31,9 @@ def buyer_dashboard(request):
 
 @login_required
 def seller_dashboard(request):
-    return render(request, 'seller_dashboard.html')
+    # Orders where any order item is for a product sold by this seller
+    orders = Order.objects.filter(orderitem__product__seller=request.user).distinct()
+    return render(request, 'seller_dashboard.html', {'orders': orders})
 
 def is_admin(user):
     return user.is_authenticated and (user.is_staff or user.is_superuser) 
