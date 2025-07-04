@@ -8,6 +8,10 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.contrib.admin.views.decorators import staff_member_required
+from utils import posthog_client
+import posthog
+from django.db.models import Sum, Count
+from products.models import Product
 
 @login_required
 def shipping_address_list(request):
@@ -112,6 +116,17 @@ def create_order(request):
             cart.cartitem_set.all().delete()
             messages.success(request, 'Order placed successfully!')
 
+            posthog.capture(
+                request.user.id,  # or use user.email for distinct_id
+                'order placed',
+                {
+                    'order_id': order.id,
+                    'total': float(order.total),
+                    'status': order.status,
+                    # add any other properties you want to track
+                }
+            )
+
             return redirect('orders:order_success', order_id=order.id)
             
         except Exception as e:
@@ -190,3 +205,20 @@ def seller_order_list(request):
     order_ids = OrderItem.objects.filter(product__seller=request.user).values_list('order_id', flat=True).distinct()
     orders = Order.objects.filter(id__in=order_ids).order_by('-created_at')
     return render(request, 'orders/order_list.html', {'orders': orders})
+
+@login_required
+def seller_reports(request):
+    # Get all order items for this seller
+    order_items = OrderItem.objects.filter(product__seller=request.user)
+    total_sales = order_items.aggregate(total=Sum('quantity'))['total'] or 0
+    total_revenue = order_items.aggregate(revenue=Sum('price'))['revenue'] or 0
+    order_count = order_items.values('order').distinct().count()
+    # Top-selling products
+    top_products = order_items.values('product__name').annotate(sold=Sum('quantity')).order_by('-sold')[:5]
+    context = {
+        'total_sales': total_sales,
+        'total_revenue': total_revenue,
+        'order_count': order_count,
+        'top_products': top_products,
+    }
+    return render(request, 'orders/seller_reports.html', context)

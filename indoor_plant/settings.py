@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'payments',
     'django_countries',
     'admin_dashboard',
+    'explorer',
 ]
 
 MIDDLEWARE = [
@@ -200,3 +201,7 @@ SHIPPING_COST = 5.00
 
 # Add SITE_ID setting
 SITE_ID = 1
+
+# PostHog Analytics
+POSTHOG_API_KEY = os.getenv('POSTHOG_API_KEY', 'your_project_api_key')
+POSTHOG_HOST = os.getenv('POSTHOG_HOST', 'https://app.posthog.com')
