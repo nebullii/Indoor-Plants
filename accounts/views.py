@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from .forms import CustomUserCreationForm
 from django.contrib.auth.decorators import user_passes_test, login_required
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, login
 from orders.models import Order
 from django.db.models import Sum, F
 from products.models import Product
@@ -15,6 +15,12 @@ class SignUpView(CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy("home")  # Fixed typo: removed space
     template_name = "registration/signup.html"
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        # Log in the user
+        login(self.request, self.object)
+        return response
 
 @login_required
 def buyer_dashboard(request):
