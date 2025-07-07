@@ -205,3 +205,11 @@ SITE_ID = 1
 # PostHog Analytics
 POSTHOG_API_KEY = os.getenv('POSTHOG_API_KEY', 'your_project_api_key')
 POSTHOG_HOST = os.getenv('POSTHOG_HOST', 'https://app.posthog.com')
+
+EXPLORER_PERMISSION_VIEW = lambda request: (
+    request.user.is_authenticated and (
+        getattr(request.user, 'role', None) == 'SELLER' or
+        request.user.is_staff or
+        request.user.is_superuser
+    )
+)
