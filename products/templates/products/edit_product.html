@@ -38,6 +38,14 @@
                         </div>
                         {% endfor %}
                         
+                        <div class="form-group mb-3">
+                            {% if form.instance.pk %}
+                                {% for tag in form.instance.tags.all %}
+                                    <span class="badge bg-success">{{ tag.name }}</span>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">Update Product</button>
                             <a href="{% url 'products:seller_products' %}" class="btn btn-secondary">Cancel</a>

@@ -33,16 +33,19 @@ def product_detail(request, product_id):
     return render(request, 'products/product_detail.html', {'product': product})
 
 def product_gallery(request):
+    category_slug = request.GET.get('category')
+    products = Product.objects.all()
+    if category_slug:
+        products = products.filter(category__slug=category_slug)
     form = SearchForm()
-    product_list = Product.objects.all().order_by('-created_at')
 
     if 'query' in request.GET:
         form = SearchForm(request.GET)
         if form.is_valid():
             query = form.cleaned_data['query']
-            product_list = product_list.filter(name__icontains=query)
+            products = products.filter(name__icontains=query)
 
-    paginator = Paginator(product_list, 8)
+    paginator = Paginator(products, 8)
     page_number = request.GET.get('page')
     products = paginator.get_page(page_number)
 

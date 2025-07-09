@@ -5,7 +5,10 @@ from .models import Product
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'description', 'price', 'image', 'featured', 'hot_selling', 'in_stock', 'category', 'tags', 'status']
+        fields = '__all__'
+        widgets = {
+            'tags': forms.SelectMultiple(attrs={'class': 'form-select'}),
+        }
     
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)

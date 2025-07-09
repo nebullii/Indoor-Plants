@@ -269,3 +269,7 @@ footer ul li a:hover {
 }
 
 /*seller_dashboard */
+
+.custom-nav-item {
+    margin-right: 0.5rem !important; /* or any value you prefer */
+}
