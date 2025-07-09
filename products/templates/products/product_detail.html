@@ -36,11 +36,21 @@
             </div>
 
             <div class="description-section">
-                <h4>Overview</h4>
+                <h4>Description</h4>
                 <p class="card-text">{{ product.description }}</p>
                 {% if product.tags.all %}
                     <p class="mb-2"><strong>Tags:</strong> {{ product.tags.all|join:", " }}</p>
                 {% endif %}
+            </div>
+
+            <div class="about-section mt-4">
+                <h4>About Plant</h4>
+                <p>{{ product.about|default:"No additional information about this plant." }}</p>
+            </div>
+
+            <div class="care-tip-section mt-4">
+                <h4>Care Tip</h4>
+                <p>{{ product.care_tip|default:"No care tips available." }}</p>
             </div>
 
             <div class="purchase-section">
