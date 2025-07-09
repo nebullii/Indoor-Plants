@@ -50,6 +50,6 @@ def find_plant_links(text):
         product_name = product.name.lower()
         product_name_clean = re.sub(r'[^\w\s]', '', product_name)
         if product_name in text or product_name_clean in text:
-            url = reverse('products:product_detail', args=[product.id])
+            url = reverse('products:product_detail', args=[product.slug])
             links.append((url, product.name))
     return links 

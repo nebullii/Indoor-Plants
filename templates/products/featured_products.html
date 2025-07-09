@@ -17,7 +17,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ product.name }}</h5>
                     <p class="card-text text-success font-weight-bold">${{ product.price }}</p>
-                    <a href="{% url 'products:product_detail' product.id %}" class="btn btn-outline-success btn-sm px-4 rounded-pill">View Details</a>
+                    <a href="{% url 'products:product_detail' product.slug %}" class="btn btn-outline-success btn-sm px-4 rounded-pill">View Details</a>
                 </div>
             </div>
         </div>

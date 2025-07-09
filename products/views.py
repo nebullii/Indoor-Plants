@@ -7,6 +7,7 @@ from .forms import ProductForm, SearchForm
 from .models import Product
 from orders.models import Order
 from django.views import View
+from django.utils.text import slugify
 
 def home(request):
     form = SearchForm()
@@ -28,8 +29,8 @@ def home(request):
     }
     return render(request, 'home.html', context)
 
-def product_detail(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
+def product_detail(request, slug):
+    product = get_object_or_404(Product, slug=slug)
     return render(request, 'products/product_detail.html', {'product': product})
 
 def product_gallery(request):
