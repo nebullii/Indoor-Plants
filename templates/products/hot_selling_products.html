@@ -16,7 +16,7 @@
                 <div class="card-body text-center">
                     <h5 class="card-title mb-2" style="font-size: 1.1rem; font-weight: 600;">{{ product.name }}</h5>
                     <p class="card-text text-success fw-bold mb-3" style="font-size: 1rem;">${{ product.price }}</p>
-                    <a href="{% url 'products:product_detail' product.id %}" class="btn btn-outline-success btn-sm px-4 rounded-pill">View Details</a>
+                    <a href="{% url 'products:product_detail' product.slug %}" class="btn btn-outline-success btn-sm px-4 rounded-pill">View Details</a>
                 </div>
             </div>
         </div>
