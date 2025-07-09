@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.shortcuts import render
 from .bot import ask_plant_advisor
-from .bot import ask_plant_advisor_with_link
+from .bot import ask_plant_advisor_with_links
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -15,7 +15,7 @@ def ask_bot(request):
         if not question:
             return JsonResponse({"error": "No question provided."}, status=400)
         try:
-            answer = ask_plant_advisor_with_link(question, request)
+            answer = ask_plant_advisor_with_links(question, request)
         except Exception as e:
             print("OpenAI error:", str(e))  # This will show up in your server log
             return JsonResponse({"error": str(e)}, status=500)

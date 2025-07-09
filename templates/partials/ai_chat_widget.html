@@ -28,7 +28,8 @@ function handleChatKey(e) {
   }
 }
 async function askBotWidget() {
-  const question = document.getElementById("user_question_widget").value;
+  const textarea = document.getElementById("user_question_widget");
+  const question = textarea.value;
   if (!question.trim()) {
     document.getElementById("bot_response_widget").innerText = "Please enter a question.";
     return;
@@ -40,8 +41,9 @@ async function askBotWidget() {
     body: new URLSearchParams({ question }),
   });
   const data = await response.json();
+  textarea.value = ""; // Clear the textarea for the next prompt
   if (data.answer) {
-    document.getElementById("bot_response_widget").innerText = data.answer;
+    document.getElementById("bot_response_widget").innerHTML = data.answer;
     document.getElementById("chat-box").classList.add("expanded"); // Expand on answer
   } else {
     document.getElementById("bot_response_widget").innerText = data.error || "Sorry, something went wrong.";
