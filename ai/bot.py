@@ -2,6 +2,7 @@ import os
 import openai
 from products.models import Product
 from django.urls import reverse
+import re
 
 PROMPT_PATH = os.path.join(os.path.dirname(__file__), 'prompts', 'plant_qa.txt')
 
@@ -26,19 +27,29 @@ def ask_plant_advisor(question):
     answer = response.choices[0].message.content.strip()
     return answer
 
-def find_plant_link(question):
-    # Simple approach: check if any product name is in the question
-    for product in Product.objects.all():
-        if product.name.lower() in question.lower():
-            # Build the product detail URL
-            url = reverse('products:product_detail', args=[product.id])
-            return url, product.name
-    return None, None
-
-def ask_plant_advisor_with_link(question, request):
+def ask_plant_advisor_with_links(question, request):
     answer = ask_plant_advisor(question)
-    url, plant_name = find_plant_link(question)
-    if url:
+    combined_text = question + " " + answer
+    links = find_plant_links(combined_text)
+    # Replace plant names in the answer with links
+    for url, name in links:
         full_url = request.build_absolute_uri(url)
-        answer += f"\n\nView {plant_name} in our marketplace: {full_url}"
-    return answer 
+        # Use regex to replace only the first occurrence, case-insensitive
+        pattern = re.compile(re.escape(name), re.IGNORECASE)
+        answer = pattern.sub(
+            f"<a href='{full_url}' target='_blank'>{name}</a>", answer, count=1
+        )
+    return answer
+
+def find_plant_links(text):
+    links = []
+    text = text.lower()
+    # Remove punctuation for better matching
+    text = re.sub(r'[^\w\s]', '', text)
+    for product in Product.objects.all():
+        product_name = product.name.lower()
+        product_name_clean = re.sub(r'[^\w\s]', '', product_name)
+        if product_name in text or product_name_clean in text:
+            url = reverse('products:product_detail', args=[product.id])
+            links.append((url, product.name))
+    return links 
