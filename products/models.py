@@ -65,6 +65,8 @@ class Product(models.Model):
     slug = models.SlugField(max_length=255, unique=True, blank=True, null=True, default=None)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name='products', null=True, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
+    about = models.TextField(blank=True, null=True)
+    care_tip = models.TextField(blank=True, null=True)
 
     class Meta:
         ordering = ['-created_at']
