@@ -32,6 +32,9 @@ GITHUB_WEBHOOK_SECRET = os.getenv("GITHUB_WEBHOOK_SECRET")
 
 STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLIC_KEY')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -60,6 +63,7 @@ INSTALLED_APPS = [
     'django_countries',
     'admin_dashboard',
     'explorer',
+    'ai',    
 ]
 
 MIDDLEWARE = [
@@ -87,6 +91,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                'products.context_processors.categories',
             ],
         },
     },

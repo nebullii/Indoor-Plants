@@ -4,53 +4,54 @@ body {
     color: #333;
     margin: 0;
     padding: 0;
+    margin-top: 60px;
 }
-
 /* Header Styles */
 .navbar {
     padding: 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
 }
 
 .navbar-brand {
-    font-size: 1.5rem;
+    font-size: 1.8rem; /* Increased brand font size */
     font-weight: bold;
 }
 
+.search-container .form-control {
+    border-radius: 4px 0 0 4px;
+    border-right: none;
+    height: 50px; /* Increased height */
+    font-size: 1.2rem; /* Increased font size */
+    padding: 10px; /* Increased padding */
+}
+
+.search-container .btn {
+    border-radius: 0 4px 4px 0;
+    height: 50px; /* Match height with input */
+    font-size: 1.2rem; /* Increased font size */
+}
+
+/* Right Navigation Items */
 .nav-link {
     text-align: center;
     padding: 0.5rem 1rem;
     transition: color 0.3s ease;
+    font-size: 1.1rem; /* Increased font size for nav links */
 }
 
 .nav-link:hover {
     color: #228B22;
 }
 
-.search-container .form-control {
-    border-radius: 4px 0 0 4px;
-    border-right: none;
-}
-
-.search-container .btn {
-    border-radius: 0 4px 4px 0;
-}
-
-/* Category Navigation */
-#categoryNav .nav-link {
-    color: #333;
-    font-weight: 500;
-    border-bottom: 2px solid transparent;
-    transition: border-bottom 0.3s ease;
-}
-
-#categoryNav .nav-link:hover {
-    border-bottom-color: #228B22;
+/* Icon Styles */
+.nav-link i {
+    font-size: 1.5rem; /* Increased icon size */
 }
 
 /* Badge Styles */
 .badge {
-    font-size: 0.8rem;
+    font-size: 0.9rem; /* Slightly increased badge font size */
     padding: 0.3em 0.6em;
 }
 
@@ -224,6 +225,7 @@ footer ul li a:hover {
     margin-left: -30px;     /* Negative margin to offset container padding */
     margin-right: -30px;    /* Negative margin to offset container padding */
     width: calc(100% + 60px); /* Full width accounting for container padding */
+    
 }
 
 @media (min-width: 1400px) {
@@ -236,12 +238,38 @@ footer ul li a:hover {
     .custom-container {
         padding-right: 15px;  /* Less padding on mobile */
         padding-left: 15px;
+        
     }
     
     .hero-section {
         margin-left: -15px;
         margin-right: -15px;
         width: calc(100% + 30px);
+        
     }
 }
 
+/* Cart Icon Styles */
+.cart-icon {
+    position: relative;
+    display: inline-block;
+    padding: 10px; /* Adjust padding as needed */
+}
+
+.cart-icon .cart-count {
+    position: absolute;
+    top: -5px; /* Adjust position */
+    right: -10px; /* Adjust position */
+    background-color: red; /* Badge background color */
+    color: white; /* Badge text color */
+    border-radius: 50%; /* Make it circular */
+    padding: 2px 6px; /* Adjust padding for the badge */
+    font-size: 12px; /* Adjust font size */
+    font-weight: bold; /* Make the text bold */
+}
+
+/*seller_dashboard */
+
+.custom-nav-item {
+    margin-right: 0.5rem !important; /* or any value you prefer */
+}

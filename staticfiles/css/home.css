@@ -289,3 +289,10 @@
     padding-left: 20px;
     padding-right: 20px;
 }
+
+.icon-container {
+    transition: transform 0.3s ease;
+}
+.icon-container:hover {
+    transform: scale(1.1);
+}

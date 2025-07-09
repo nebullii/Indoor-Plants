@@ -37,7 +37,10 @@
 
             <div class="description-section">
                 <h4>Overview</h4>
-                <p>{{ product.description }}</p>
+                <p class="card-text">{{ product.description }}</p>
+                {% if product.tags.all %}
+                    <p class="mb-2"><strong>Tags:</strong> {{ product.tags.all|join:", " }}</p>
+                {% endif %}
             </div>
 
             <div class="purchase-section">

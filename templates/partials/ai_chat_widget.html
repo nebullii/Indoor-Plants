@@ -1,0 +1,50 @@
+<!-- templates/partials/ai_chat_widget.html -->
+<div id="ai-chat-widget">
+  <button class="ai-chat-btn" onclick="toggleChat()" title="Chat with Plant Expert">
+    <i class="fas fa-comments"></i>
+  </button>
+  <div id="chat-box" style="display: none;">
+    <div style="padding:14px 14px 10px 14px;">
+      <textarea id="user_question_widget" rows="2" placeholder="Ask about plants..." onkeydown="handleChatKey(event)"></textarea>
+      <button onclick="askBotWidget()">Ask</button>
+      <div id="bot_response_widget"></div>
+    </div>
+  </div>
+</div>
+<script>
+function toggleChat() {
+  var box = document.getElementById("chat-box");
+  if (box.style.display === "block") {
+    box.style.display = "none";
+  } else {
+    box.style.display = "block";
+    box.classList.remove("expanded"); // Reset to small size when opened
+  }
+}
+function handleChatKey(e) {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    askBotWidget();
+  }
+}
+async function askBotWidget() {
+  const question = document.getElementById("user_question_widget").value;
+  if (!question.trim()) {
+    document.getElementById("bot_response_widget").innerText = "Please enter a question.";
+    return;
+  }
+  document.getElementById("bot_response_widget").innerText = "Thinking...";
+  const response = await fetch("/ai/ask/", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ question }),
+  });
+  const data = await response.json();
+  if (data.answer) {
+    document.getElementById("bot_response_widget").innerText = data.answer;
+    document.getElementById("chat-box").classList.add("expanded"); // Expand on answer
+  } else {
+    document.getElementById("bot_response_widget").innerText = data.error || "Sorry, something went wrong.";
+  }
+}
+</script>
