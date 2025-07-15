@@ -29,16 +29,27 @@ def ask_plant_advisor(question):
 
 def ask_plant_advisor_with_links(question, request):
     answer = ask_plant_advisor(question)
-    combined_text = question + " " + answer
-    links = find_plant_links(combined_text)
-    # Replace plant names in the answer with links
-    for url, name in links:
-        full_url = request.build_absolute_uri(url)
-        # Use regex to replace only the first occurrence, case-insensitive
-        pattern = re.compile(re.escape(name), re.IGNORECASE)
-        answer = pattern.sub(
-            f"<a href='{full_url}' target='_blank'>{name}</a>", answer, count=1
-        )
+    # First, replace markdown links as before
+    markdown_link_pattern = re.compile(r'\[(.*?)\]\(PRODUCT_LINK\)')
+    matches = markdown_link_pattern.findall(answer)
+    already_linked = set()
+    for plant_name in matches:
+        try:
+            product = Product.objects.get(name__iexact=plant_name)
+            url = request.build_absolute_uri(reverse('products:product_detail', args=[product.slug]))
+            answer = re.sub(rf'\[{re.escape(plant_name)}\]\(PRODUCT_LINK\)', f"<a href='{url}' target='_blank'>{plant_name}</a>", answer, count=1)
+            already_linked.add(plant_name.lower())
+        except Product.DoesNotExist:
+            answer = re.sub(rf'\[{re.escape(plant_name)}\]\(PRODUCT_LINK\)', plant_name, answer, count=1)
+    # Then, linkify any plain plant names not already linked
+    for product in Product.objects.all():
+        pname = product.name
+        if pname.lower() in already_linked:
+            continue
+        url = request.build_absolute_uri(reverse('products:product_detail', args=[product.slug]))
+        # Only replace if not already inside an <a> tag
+        pattern = re.compile(rf'(?<![>\w])({re.escape(pname)})(?![^<]*?>)', re.IGNORECASE)
+        answer = pattern.sub(f"<a href='{url}' target='_blank'>{pname}</a>", answer, count=1)
     return answer
 
 def find_plant_links(text):
