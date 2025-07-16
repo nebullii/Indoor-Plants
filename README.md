@@ -1,8 +1,8 @@
-<img width="1449" alt="image" src="https://github.com/user-attachments/assets/2c88f095-63d3-47b4-87e1-b0c4c5958bed" /># Indoor Plant Store
+# Indoor Plant Store
 
 A Django-based e-commerce platform for buying and selling indoor plants. This project is designed to help plant enthusiasts and small businesses easily manage and explore a curated collection of indoor plants—with a clean interface and seamless payment integration via Stripe.
 
-**Live Demo:** [indoorplant.store](https://nevus.pythonanywhere.com/)
+**Live Demo:** [indoorplants.store](https://nevus.pythonanywhere.com/)
 
 ---
 
@@ -36,9 +36,9 @@ A Django-based e-commerce platform for buying and selling indoor plants. This pr
 - ![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)
 - ![Django](https://img.shields.io/badge/Django-092E20?style=flat&logo=django&logoColor=white)
 - ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
-- ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3)
-- ![Stripe](https://img.shields.io/badge/Stripe-008CDD?style=flat&logo=stripe)
-- ![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)
+- ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)
+- ![Stripe](https://img.shields.io/badge/Stripe-008CDD?style=flat&logo=stripe&logoColor=white)
+- ![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=flat&logo=bootstrap&logoColor=white)
 
 ---
 
@@ -56,8 +56,8 @@ A Django-based e-commerce platform for buying and selling indoor plants. This pr
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/nebullii/Indoor-Plant.git
-   cd Indoor-Plant
+   git clone https://github.com/nebullii/Indoor-Plants.git
+   cd Indoor-Plants
    ```
 
 2. Set up a virtual environment (recommended):
@@ -86,19 +86,36 @@ A Django-based e-commerce platform for buying and selling indoor plants. This pr
    pip install -r requirements.txt
    ```
 
-5. Apply migrations:
+5. Set up environment variables:
+
+   Create a `.env` file in the project root and add your Stripe keys:
+
+   ```env
+   STRIPE_PUBLIC_KEY=your_stripe_public_key_here
+   STRIPE_SECRET_KEY=your_stripe_secret_key_here
+   DEBUG=True
+   SECRET_KEY=your_django_secret_key_here
+   ```
+
+6. Apply migrations:
 
    ```bash
    python manage.py migrate
    ```
 
-6. Run the development server:
+7. Create a superuser (optional, for admin access):
+
+   ```bash
+   python manage.py createsuperuser
+   ```
+
+8. Run the development server:
 
    ```bash
    python manage.py runserver
    ```
 
-7. Open your browser and visit:
+9. Open your browser and visit:
 
    [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 
@@ -136,7 +153,6 @@ A Django-based e-commerce platform for buying and selling indoor plants. This pr
 
 ![Seller Products](https://github.com/user-attachments/assets/b5740c00-3f16-4f97-a14c-07f036f749f1)
 
-
 **Cart View:**
 
 ![Cart View](https://github.com/user-attachments/assets/94da07a1-ac60-4c4d-924b-345792f18ec7)
@@ -145,6 +161,13 @@ A Django-based e-commerce platform for buying and selling indoor plants. This pr
 
 ![Payment Page](https://github.com/user-attachments/assets/e29c3219-4a64-468a-8c6e-b26660da7621)
 
+**Analytics Dashboard:**
+
+![Analytics Dashboard](https://github.com/user-attachments/assets/2c88f095-63d3-47b4-87e1-b0c4c5958bed)
+
+**Product Management:**
+
+![Product Management](https://github.com/user-attachments/assets/4a4f4ac6-b067-4730-982c-401d2063f2c5)
 
 ---
 
@@ -160,3 +183,18 @@ Contributions are welcome! To contribute:
 6. Open a Pull Request
 
 Feel free to submit issues for any bugs or feature requests.
+
+---
+
+## Contact
+
+- **GitHub:** [@nebullii](https://github.com/nebullii)
+- **Live Demo:** [indoorplants.store](https://nevus.pythonanywhere.com/)
+
+---
+
+## Acknowledgments
+
+- Thanks to the Django and Stripe communities for their excellent documentation
+- Bootstrap for the responsive design framework
+- All contributors who help improve this project
