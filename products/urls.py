@@ -17,3 +17,7 @@ urlpatterns = [
     path('<slug:slug>/', views.product_detail, name='product_detail'),  # <-- This should be last!
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) \
     + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+urlpatterns += [
+    path('product/<int:product_id>/print_label/', views.print_label, name='print_label'),
+]

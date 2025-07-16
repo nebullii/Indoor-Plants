@@ -64,12 +64,18 @@ INSTALLED_APPS = [
     'admin_dashboard',
     'explorer',
     'ai',    
+    'analytics',
+    'ckeditor',
+    'django_quill',
+    'inventory',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this line
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'analytics.middleware.LogSiteVisitMiddleware',
+    'analytics.middleware.LogPageViewMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -207,10 +213,6 @@ SHIPPING_COST = 5.00
 # Add SITE_ID setting
 SITE_ID = 1
 
-# PostHog Analytics
-POSTHOG_API_KEY = os.getenv('POSTHOG_API_KEY', 'your_project_api_key')
-POSTHOG_HOST = os.getenv('POSTHOG_HOST', 'https://app.posthog.com')
-
 EXPLORER_PERMISSION_VIEW = lambda request: (
     request.user.is_authenticated and (
         getattr(request.user, 'role', None) == 'SELLER' or
@@ -218,3 +220,24 @@ EXPLORER_PERMISSION_VIEW = lambda request: (
         request.user.is_superuser
     )
 )
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': '100%',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline'],
+            ['NumberedList', 'BulletedList'],
+            ['Link', 'Unlink'],
+            ['RemoveFormat', 'Source']
+        ],
+        'extraPlugins': ','.join([
+            'codesnippet',  # if you want code blocks
+        ]),
+        'removePlugins': 'stylesheetparser',
+        'allowedContent': True,
+    }
+}

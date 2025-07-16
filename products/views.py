@@ -2,6 +2,7 @@ from django.core.paginator import Paginator
 from django.views.generic import ListView
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.http import HttpResponseForbidden
 from .forms import ProductForm, SearchForm
 from .models import Product
@@ -99,6 +100,15 @@ def delete_product(request, product_id):
     product = get_object_or_404(Product, id=product_id, seller=request.user)
     product.delete()
     return redirect('products:seller_products')
+
+@login_required
+def print_label(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    inventory_item = getattr(product, 'inventory_item', None)
+    return render(request, 'products/print_label.html', {
+        'product': product,
+        'inventory_item': inventory_item
+    })
 
 class BuyerDashboardView(View):
     def get(self, request):

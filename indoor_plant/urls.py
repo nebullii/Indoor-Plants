@@ -20,6 +20,7 @@ urlpatterns = [
     path('update_from_github/', update_from_github, name='update_from_github'),
     path('subscribe/', subscribe, name='subscribe'),
     path('ai/', include('ai.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Add static file serving for development
