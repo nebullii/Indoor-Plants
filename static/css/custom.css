@@ -35,7 +35,8 @@ body {
 /* Right Navigation Items */
 .nav-link {
     text-align: center;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.2rem;
+    margin-right: 0.1rem;
     transition: color 0.3s ease;
     font-size: 1.1rem; /* Increased font size for nav links */
 }

@@ -42,7 +42,7 @@
                     <i class="fas fa-home"></i>
                     <span class="d-block small"></span>
                 </a>
-                <a href="{% url 'cart:view_cart' %}" class="nav-link text-dark mx-3 position-relative cart-icon">
+                <a href="{% url 'cart:view_cart' %}" class="nav-link text-dark position-relative cart-icon">
                     <i class="fas fa-shopping-cart"></i>
                     <span class="d-block small">Cart</span>
                     {% if request.user.is_authenticated and request.user.cart.cartitem_set.count %}
@@ -55,7 +55,7 @@
                     <div class="dropdown">
                         <a class="nav-link text-dark dropdown-toggle" href="#" role="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-user"></i>
-                            <span class="d-block small">{{ user.username }}</span>
+                            <span class="d-block small"></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                             {% if user.role == 'SELLER' %}

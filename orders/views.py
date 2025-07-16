@@ -8,8 +8,6 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.contrib.admin.views.decorators import staff_member_required
-from utils import posthog_client
-import posthog
 from django.db.models import Sum, Count
 from products.models import Product
 
@@ -115,17 +113,6 @@ def create_order(request):
             
             cart.cartitem_set.all().delete()
             messages.success(request, 'Order placed successfully!')
-
-            posthog.capture(
-                request.user.id,  # or use user.email for distinct_id
-                'order placed',
-                {
-                    'order_id': order.id,
-                    'total': float(order.total),
-                    'status': order.status,
-                    # add any other properties you want to track
-                }
-            )
 
             return redirect('orders:order_success', order_id=order.id)
             
