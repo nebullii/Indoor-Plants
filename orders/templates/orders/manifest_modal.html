@@ -1,0 +1,63 @@
+<!-- FedEx Manifest Modal -->
+<div class="modal fade" id="fedexManifestModal" tabindex="-1" aria-labelledby="fedexManifestModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="fedexManifestModalLabel">Package Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="fedex-manifest-form">
+          <div class="row mb-3">
+            <div class="col">
+              <label for="shipment_type" class="form-label">Shipment Type</label>
+              <select class="form-select" id="shipment_type" name="shipment_type" required>
+                <option value="DROPOFF_AT_FEDEX_LOCATION">Dropoff at FedEx Location</option>
+                <option value="CONTACT_FEDEX_TO_SCHEDULE">Contact FedEx to Schedule</option>
+                <option value="ON_CALL_PICKUP">On Call Pickup</option>
+                <option value="ONE_TIME_PICKUP">One Time Pickup</option>
+              </select>
+            </div>
+            <div class="col">
+              <label for="service" class="form-label">Service</label>
+              <select class="form-select" id="service" name="service" required>
+                <option value="FEDEX_GROUND">FedEx Ground</option>
+                <option value="FEDEX_EXPRESS_SAVER">Express Saver</option>
+                <option value="STANDARD_OVERNIGHT">Standard Overnight</option>
+                <option value="PRIORITY_OVERNIGHT">Priority Overnight</option>
+              </select>
+            </div>
+            <div class="col">
+              <label for="declared_value" class="form-label">Declared Value</label>
+              <input type="number" step="0.01" class="form-control" id="declared_value" name="declared_value" required>
+            </div>
+            <div class="col">
+              <label for="pickup_time" class="form-label">Pickup Time</label>
+              <input type="text" class="form-control" id="pickup_time" name="pickup_time" required>
+            </div>
+            <div class="col">
+              <label for="total_weight" class="form-label">Total Weight</label>
+              <input type="number" step="0.01" class="form-control" id="total_weight" name="total_weight" required>
+            </div>
+            <div class="col">
+              <label for="length" class="form-label">Length (cm)</label>
+              <input type="number" class="form-control" id="length" name="length" required>
+            </div>
+            <div class="col">
+              <label for="width" class="form-label">Width (cm)</label>
+              <input type="number" class="form-control" id="width" name="width" required>
+            </div>
+            <div class="col">
+              <label for="height" class="form-label">Height (cm)</label>
+              <input type="number" class="form-control" id="height" name="height" required>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-success">Manifest</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> 
+

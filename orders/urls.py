@@ -19,4 +19,5 @@ urlpatterns = [
     path('seller/', views.seller_order_list, name='seller_order_list'),
     path('<int:order_id>/', views.order_detail, name='order_detail'),
     path('proceed-to-payment/<int:address_id>/', views.proceed_to_payment, name='proceed_to_payment'),
+    path('fedex/manifest/', views.fedex_manifest, name='fedex_manifest'),
 ]

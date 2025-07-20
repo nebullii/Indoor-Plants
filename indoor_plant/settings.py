@@ -241,3 +241,7 @@ CKEDITOR_CONFIGS = {
         'allowedContent': True,
     }
 }
+
+FEDEX_API_KEY = os.getenv('FEDEX_API_KEY')
+FEDEX_API_SECRET = os.getenv('FEDEX_API_SECRET')
+FEDEX_ACCOUNT_NUMBER = os.getenv('FEDEX_ACCOUNT_NUMBER')
