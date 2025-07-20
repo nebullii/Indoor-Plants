@@ -30,7 +30,11 @@
             
             <div class="pricing-section">
                 <h2 class="price-tag">${{ product.price|floatformat:2 }}</h2>
-                <span class="badge badge-success">In Stock</span>
+                {% if product.stock > 0 %}
+                    <span class="badge badge-success">In Stock</span>
+                {% else %}
+                    <span class="badge badge-warning">Out of Stock</span>
+                {% endif %}
                 <p class="shipping-info">
                     <i class="fas fa-truck"></i> Standard Delivery Time: 5 business days
                 </p>

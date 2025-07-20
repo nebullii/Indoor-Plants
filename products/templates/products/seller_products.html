@@ -42,10 +42,10 @@
             <td>ERTH{{ product.id|stringformat:"02d" }}</td>
             <td>{{ product.created_at|date:"d M, y" }}</td>
             <td>
-              {% if product.status == 'available' %}
+              {% if product.stock > 0 %}
                 <span class="badge bg-success">Active</span>
               {% else %}
-                <span class="badge bg-warning text-dark">Not Available</span>
+                <span class="badge bg-warning text-dark">Out of Stock</span>
               {% endif %}
             </td>
             <td>{{ product.stock }}</td>
