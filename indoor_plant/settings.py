@@ -245,3 +245,5 @@ CKEDITOR_CONFIGS = {
 FEDEX_API_KEY = os.getenv('FEDEX_API_KEY')
 FEDEX_API_SECRET = os.getenv('FEDEX_API_SECRET')
 FEDEX_ACCOUNT_NUMBER = os.getenv('FEDEX_ACCOUNT_NUMBER')
+FEDEX_AUTH_URL = "https://apis-sandbox.fedex.com/oauth/token"
+FEDEX_SHIPMENT_URL = "https://apis-sandbox.fedex.com/ship/v1/shipments" 

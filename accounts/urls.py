@@ -4,7 +4,7 @@ from . import views
 
 app_name = 'accounts'
 urlpatterns = [
-    path('dashboard/', views.profile_view, name='profile'),  # Changed to match template
+    path('dashboard/', views.profile_view, name='profile'),  
     path('signup/', views.SignUpView.as_view(), name='signup'),
     path('buyer-dashboard/', views.buyer_dashboard, name='buyer_dashboard'),
     path('seller-dashboard/', views.seller_dashboard, name='seller_dashboard'),

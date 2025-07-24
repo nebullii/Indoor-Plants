@@ -1,10 +1,10 @@
-{% extends "base.html" %}
+{% extends "seller_dashboard/base_seller.html" %}
 {% load static %}
 {% load widget_tweaks %}
 
 {% block title %}{% if product %}Edit{% else %}Add{% endif %} Product{% endblock %}
 
-{% block content %}
+{% block seller_content %}
 <div class="container mt-5">
     {% if messages %}
       {% for message in messages %}

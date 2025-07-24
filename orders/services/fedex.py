@@ -1,8 +1,9 @@
 import requests
 from django.conf import settings
+import json
 
-FEDEX_AUTH_URL = "https://apis-sandbox.fedex.com/oauth/token"
-FEDEX_SHIPMENT_URL = "https://apis-sandbox.fedex.com/ship/v1/shipments"
+FEDEX_AUTH_URL = settings.FEDEX_AUTH_URL
+FEDEX_SHIPMENT_URL = settings.FEDEX_SHIPMENT_URL
 
 def get_fedex_access_token():
     """
@@ -19,9 +20,6 @@ def get_fedex_access_token():
 
 
 def create_fedex_shipment(shipment_type, service, declared_value, pickup_time, total_weight, length, width, height):
-    """
-    Create a FedEx shipment (manifest) and return a label and tracking number (test/sandbox version).
-    """
     access_token = get_fedex_access_token()
     headers = {
         "Authorization": f"Bearer {access_token}",
@@ -31,41 +29,55 @@ def create_fedex_shipment(shipment_type, service, declared_value, pickup_time, t
         "accountNumber": {"value": settings.FEDEX_ACCOUNT_NUMBER},
         "requestedShipment": {
             "shipper": {
+                "contact": {
+                    "personName": "Your Real Name",
+                    "phoneNumber": "Your Real Phone"
+                },
                 "address": {
-                    "streetLines": ["123 Shipper St"],
-                    "city": "Memphis",
-                    "stateOrProvinceCode": "TN",
-                    "postalCode": "38116",
+                    "streetLines": ["Your Real Address"],
+                    "city": "Your City",
+                    "stateOrProvinceCode": "Your State",
+                    "postalCode": "Your Postal",
                     "countryCode": "US"
                 }
             },
             "recipient": {
+                "contact": {
+                    "personName": "Recipient Name",
+                    "phoneNumber": "Recipient Phone"
+                },
                 "address": {
-                    "streetLines": ["789 Recipient Ave"],
-                    "city": "Orlando",
-                    "stateOrProvinceCode": "FL",
-                    "postalCode": "32801",
+                    "streetLines": ["Recipient Address"],
+                    "city": "Recipient City",
+                    "stateOrProvinceCode": "Recipient State",
+                    "postalCode": "Recipient Postal",
                     "countryCode": "US"
                 }
             },
             "pickupType": shipment_type,
             "serviceType": service,
-            "packagingType": "YOUR_PACKAGING",
-            "totalWeight": {
-                "units": "KG",
-                "value": float(total_weight)
+            "packagingType": "FEDEX_BOX",
+            "paymentType": "SENDER",
+            "shippingChargesPayment": {
+                "paymentType": "SENDER",
+                "payor": {
+                    "responsibleParty": {
+                        "accountNumber": {"value": settings.FEDEX_ACCOUNT_NUMBER},
+                        "countryCode": "US"
+                    }
+                }
             },
-            "declaredValue": {
-                "amount": float(declared_value),
-                "currency": "USD"
+            "labelSpecification": {
+                "labelFormatType": "COMMON2D",
+                "imageType": "PDF",
+                "labelStockType": "PAPER_4X6"
             },
+            "rateRequestType": ["ACCOUNT"],
+            "totalWeight": {"units": "KG", "value": float(total_weight)},
             "shipTimestamp": pickup_time,
             "requestedPackageLineItems": [
                 {
-                    "weight": {
-                        "units": "KG",
-                        "value": float(total_weight)
-                    },
+                    "weight": {"units": "KG", "value": float(total_weight)},
                     "dimensions": {
                         "length": int(length),
                         "width": int(width),
@@ -78,5 +90,4 @@ def create_fedex_shipment(shipment_type, service, declared_value, pickup_time, t
     }
     response = requests.post(FEDEX_SHIPMENT_URL, headers=headers, json=payload)
     response.raise_for_status()
-    shipment_data = response.json()
-    return shipment_data 
+    return response.json() 
