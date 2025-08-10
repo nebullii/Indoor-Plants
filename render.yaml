@@ -33,4 +33,4 @@ services:
 databases:
   - name: indoor_plant_db
     databaseName: indoor_plant
-    user: indoor_plant_user 
+    user: indoor_plant_user
