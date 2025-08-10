@@ -2,7 +2,7 @@ services:
   - type: web
     name: indoor-plant
     env: python
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput
     startCommand: gunicorn indoor_plant.wsgi:application
     envVars:
       - key: PYTHON_VERSION
