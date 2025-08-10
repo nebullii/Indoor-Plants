@@ -10,6 +10,8 @@ from django.db.models import Sum, F
 from products.models import Product
 from .forms import SellerProfileForm
 from django.contrib import messages
+from django.shortcuts import get_object_or_404
+from .models import CustomUser
 
 User = get_user_model()
 
@@ -44,13 +46,30 @@ def seller_dashboard(request):
     return render(request, 'seller_dashboard.html', {'orders': orders})
 
 def is_admin(user):
-    return user.is_authenticated and (user.is_staff or user.is_superuser) 
+    """Check if user has admin privileges (staff, superuser, or ADMIN role)"""
+    return user.is_authenticated and (
+        user.is_staff or 
+        user.is_superuser or 
+        getattr(user, 'role', None) == 'ADMIN'
+    )
+
+def is_admin_user(user):
+    """Alias for is_admin for backward compatibility"""
+    return is_admin(user)
+
+def is_seller_user(user):
+    """Check if user is a seller"""
+    return user.is_authenticated and getattr(user, 'role', None) == 'SELLER'
+
+def is_buyer_user(user):
+    """Check if user is a buyer"""
+    return user.is_authenticated and getattr(user, 'role', None) == 'BUYER' 
 
 
 @login_required
 def profile_view(request):
     if request.method == 'POST':
-        form = SellerProfileForm(request.POST, instance=request.user)
+        form = SellerProfileForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, 'Profile updated successfully!')
@@ -64,3 +83,11 @@ def profile_view(request):
 @login_required
 def cart_view(request):
     return render(request, 'cart.html')
+
+def seller_storefront(request, seller_slug):
+    seller = get_object_or_404(CustomUser, slug=seller_slug, role='SELLER')
+    products = Product.objects.filter(seller=seller).order_by('-created_at')
+    return render(request, 'seller_dashboard/storefront.html', {
+        'seller': seller,
+        'products': products,
+    })

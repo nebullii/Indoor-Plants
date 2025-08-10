@@ -110,11 +110,6 @@ def print_label(request, product_id):
         'inventory_item': inventory_item
     })
 
-class BuyerDashboardView(View):
-    def get(self, request):
-        orders = Order.objects.filter(user=request.user)
-        return render(request, 'buyer_dashboard.html', {'orders': orders})
-    
 def search_plants(request):
     form = SearchForm()
     results = []

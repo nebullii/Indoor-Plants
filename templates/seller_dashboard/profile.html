@@ -5,7 +5,7 @@
 {% block seller_content %}
 <div class="container py-4">
     <h2 class="mb-4 d-flex align-items-center">
-        Store
+        Profile
         <button id="editProfileBtn" class="btn btn-link ms-2" title="Edit Profile">
             <i class="fas fa-pencil-alt"></i>
         </button>
@@ -17,6 +17,11 @@
     {% endif %}
     <div class="card shadow-sm">
         <div class="card-body">
+            {% if user.store_banner %}
+                <div class="mb-4 text-center">
+                    <img src="{{ user.store_banner.url }}" alt="Store Banner" class="img-fluid rounded" style="max-height: 200px; object-fit: cover; width: 100%;">
+                </div>
+            {% endif %}
             <!-- Read-only profile details -->
             <dl class="row mb-0" id="profileDetails">
                 <dt class="col-sm-3">Company Name</dt>
@@ -31,8 +36,18 @@
                 <dd class="col-sm-9">{{ user.address|default:'-' }}</dd>
             </dl>
             <!-- Editable form, hidden by default -->
-            <form method="post" novalidate id="profileForm" style="display:none;">
+            <form method="post" enctype="multipart/form-data" novalidate id="profileForm" style="display:none;">
                 {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_store_banner" class="form-label">Store Banner</label>
+                    <small class="text-muted d-block mb-2">Recommended size: 1200x300px</small>
+                    {% if user.store_banner %}
+                        <div class="mb-2">
+                            <img src="{{ user.store_banner.url }}" alt="Current Banner" class="img-fluid rounded" style="max-height: 200px; object-fit: cover; width: 100%;">
+                        </div>
+                    {% endif %}
+                    {{ form.store_banner }}
+                </div>
                 <div class="row mb-3">
                     <div class="col-md-6 mb-3">
                         <label for="id_business_name" class="form-label">Company Name</label>

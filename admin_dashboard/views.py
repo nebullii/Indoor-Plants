@@ -5,16 +5,13 @@ from products.models import Product
 from django.views.generic import ListView
 from django.contrib.auth.decorators import user_passes_test
 from accounts.models import CustomUser 
+from accounts.views import is_admin_user  # Import centralized auth helper
 from django.db.models import Sum
 from datetime import datetime, timedelta
 from decimal import Decimal
 from django.db.models import Count
 from django.db.models.functions import TruncMonth
 from django.contrib.auth.decorators import login_required
-
-
-def is_admin_user(user):
-    return user.is_authenticated and (user.is_staff or user.role == 'ADMIN')
 
 @user_passes_test(is_admin_user)
 def dashboard(request):
@@ -24,8 +21,8 @@ def dashboard(request):
     # Get total products count
     total_products = Product.objects.count()
 
-    # Get total sellers count
-    total_sellers = CustomUser.objects.filter(role='SELLER').count()
+    # Get total sellers count using centralized manager methods
+    total_sellers = CustomUser.objects.sellers_count()
 
     # Fetch the latest 5 orders
     recent_orders = Order.objects.select_related('user').order_by('-created_at')[:3]
@@ -86,7 +83,7 @@ def order_list(request):
 
 @user_passes_test(is_admin_user)
 def sellers_list(request):
-    sellers = CustomUser.objects.filter(role='SELLER')  # Fetch all sellers
+    sellers = CustomUser.objects.get_sellers()  # Fetch all sellers using centralized method
     context = {
         'sellers': sellers,
     }
@@ -115,9 +112,9 @@ def deactivate_seller(request, seller_id):
 
 @user_passes_test(is_admin_user)
 def seller_statistics(request):
-    total_sellers = CustomUser.objects.filter(role='SELLER').count()
-    verified_sellers = CustomUser.objects.filter(role='SELLER', is_verified=True).count()
-    inactive_sellers = CustomUser.objects.filter(role='SELLER', is_active=False).count()
+    total_sellers = CustomUser.objects.sellers_count()
+    verified_sellers = CustomUser.objects.verified_sellers_count()
+    inactive_sellers = CustomUser.objects.get_inactive_sellers().count()
 
     context = {
         'total_sellers': total_sellers,

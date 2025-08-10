@@ -4,8 +4,11 @@
 
 {% block title %}Product Gallery{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/product.css' %}">
+{% endblock %}
+
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/custom.css' %}">
 <div class="container mt-5">
     <h2 class="text-center font-weight-bold mb-4">Our Collection</h2>
     <div class="row">
@@ -31,7 +34,7 @@
                     <a href="{% url 'products:product_detail' product.slug %}" 
                        class="btn btn-outline-success btn-sm mr-2" 
                        aria-label="View details of {{ product.name }}">
-                        View Details
+                        View
                     </a>
                     <form action="{% url 'cart:add_to_cart' product.id %}" 
                           method="POST" 
@@ -42,7 +45,7 @@
                         <button type="submit" 
                                 class="btn btn-success btn-sm add-to-cart-button" 
                                 aria-label="Add {{ product.name }} to cart">
-                            Add to Cart
+                            + Cart
                         </button>
                     </form>
                 </div>
