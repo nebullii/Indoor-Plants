@@ -23,7 +23,12 @@
             <h1 class="product-title">{{ product.name }}</h1>
             <div class="product-meta">
                 {% if product.seller %}
-                <p class="mb-2">Seller: {{ product.seller.username }}</p>
+                <p class="mb-2">
+                    Seller: 
+                    <a href="{% url 'accounts:seller_storefront' product.seller.slug %}">
+                        {{ product.seller.store_name|default:product.seller.username }}
+                    </a>
+                </p>
                 {% endif %}
                 <p class="mb-2">SKU: ERTH{{ product.id|stringformat:"02d" }}</p>
             </div>

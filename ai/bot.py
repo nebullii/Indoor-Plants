@@ -29,27 +29,66 @@ def ask_plant_advisor(question):
 
 def ask_plant_advisor_with_links(question, request):
     answer = ask_plant_advisor(question)
-    # First, replace markdown links as before
+    
+    # First, replace markdown links [Plant Name](PRODUCT_LINK)
     markdown_link_pattern = re.compile(r'\[(.*?)\]\(PRODUCT_LINK\)')
     matches = markdown_link_pattern.findall(answer)
     already_linked = set()
+    
     for plant_name in matches:
         try:
-            product = Product.objects.get(name__iexact=plant_name)
-            url = request.build_absolute_uri(reverse('products:product_detail', args=[product.slug]))
-            answer = re.sub(rf'\[{re.escape(plant_name)}\]\(PRODUCT_LINK\)', f"<a href='{url}' target='_blank'>{plant_name}</a>", answer, count=1)
-            already_linked.add(plant_name.lower())
-        except Product.DoesNotExist:
+            # Try exact match first
+            product = Product.objects.filter(name__iexact=plant_name).first()
+            
+            # If no exact match, try partial matches
+            if not product:
+                # Try matching against name that contains the plant name
+                product = Product.objects.filter(name__icontains=plant_name.split('(')[0].strip()).first()
+            
+            # If still no match, try matching common plant names
+            if not product:
+                # Handle common variations
+                plant_variations = {
+                    'Snake Plant': 'Snake Plant (Sansevieria)',
+                    'Pothos': 'Pothos (Epipremnum aureum)', 
+                    'Peace Lily': 'Peace Lily (Spathiphyllum)',
+                    'ZZ Plant': 'ZZ Plant (Zamioculcas zamiifolia)',
+                    'Aloe Vera': 'Aloe Vera (Aloe barbadensis)',
+                    'Sansevieria': 'Snake Plant (Sansevieria)'
+                }
+                
+                for variation, full_name in plant_variations.items():
+                    if variation.lower() in plant_name.lower():
+                        product = Product.objects.filter(name__icontains=variation).first()
+                        break
+            
+            if product:
+                url = request.build_absolute_uri(reverse('products:product_detail', args=[product.slug]))
+                answer = re.sub(rf'\[{re.escape(plant_name)}\]\(PRODUCT_LINK\)', 
+                              f"<a href='{url}' target='_blank' style='color: #28a745; text-decoration: none; font-weight: bold;'>{plant_name}</a>", 
+                              answer, count=1)
+                already_linked.add(plant_name.lower())
+                already_linked.add(product.name.lower())
+            else:
+                # Remove the link format but keep the plant name
+                answer = re.sub(rf'\[{re.escape(plant_name)}\]\(PRODUCT_LINK\)', plant_name, answer, count=1)
+                
+        except Exception as e:
+            # Remove the link format but keep the plant name
             answer = re.sub(rf'\[{re.escape(plant_name)}\]\(PRODUCT_LINK\)', plant_name, answer, count=1)
-    # Then, linkify any plain plant names not already linked
+    
+    # Then, linkify any plain plant names not already linked (more conservative approach)
     for product in Product.objects.all():
-        pname = product.name
-        if pname.lower() in already_linked:
-            continue
-        url = request.build_absolute_uri(reverse('products:product_detail', args=[product.slug]))
-        # Only replace if not already inside an <a> tag
-        pattern = re.compile(rf'(?<![>\w])({re.escape(pname)})(?![^<]*?>)', re.IGNORECASE)
-        answer = pattern.sub(f"<a href='{url}' target='_blank'>{pname}</a>", answer, count=1)
+        # Split product name to get just the common name
+        common_name = product.name.split('(')[0].strip()
+        
+        if product.name.lower() not in already_linked and common_name.lower() not in already_linked:
+            url = request.build_absolute_uri(reverse('products:product_detail', args=[product.slug]))
+            
+            # Only replace standalone mentions, not parts of other words
+            pattern = re.compile(rf'\b({re.escape(common_name)})\b(?![^<]*</a>)', re.IGNORECASE)
+            answer = pattern.sub(f"<a href='{url}' target='_blank' style='color: #28a745; text-decoration: none; font-weight: bold;'>{common_name}</a>", answer, count=1)
+    
     return answer
 
 def find_plant_links(text):
