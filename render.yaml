@@ -16,4 +16,21 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: ALLOWED_HOSTS
-        value: .onrender.com 
+        value: .onrender.com
+      - key: STRIPE_PUBLISHABLE_KEY
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: SENDGRID_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: FEDEX_API_KEY
+        sync: false
+      - key: FEDEX_API_SECRET
+        sync: false
+
+databases:
+  - name: indoor_plant_db
+    databaseName: indoor_plant
+    user: indoor_plant_user 
