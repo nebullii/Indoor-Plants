@@ -212,9 +212,17 @@ def fedex_manifest(request):
         height = data.get('height')
 
         try:
+            # Get order and shipping address
+            order_id = request.GET.get('order_id') or request.POST.get('order_id') or data.get('order_id')
+            order = Order.objects.get(id=order_id) if order_id else None
+            shipping_address = order.shipping_address if order else None
+            
+            if not shipping_address:
+                return JsonResponse({'success': False, 'error': 'No shipping address found for this order.'})
+            
             # Call FedEx API to create shipment/manifest and get label
             shipment_data = create_fedex_shipment(
-                shipment_type, service, declared_value, pickup_time, total_weight, length, width, height
+                shipment_type, service, declared_value, pickup_time, total_weight, length, width, height, shipping_address
             )
             # Extract label (FedEx may return base64 or a URL)
             label_url = None
@@ -231,15 +239,9 @@ def fedex_manifest(request):
             if not label_url and 'label_url' in shipment_data:
                 label_url = shipment_data['label_url']
             # Save tracking number to order if available
-            order_id = request.GET.get('order_id') or request.POST.get('order_id') or data.get('order_id')
-            if tracking_number and order_id:
-                from .models import Order
-                try:
-                    order = Order.objects.get(id=order_id)
-                    order.tracking_number = tracking_number
-                    order.save()
-                except Order.DoesNotExist:
-                    pass
+            if tracking_number and order:
+                order.tracking_number = tracking_number
+                order.save()
             if label_url and tracking_number:
                 return JsonResponse({'success': True, 'label_url': label_url, 'tracking_number': tracking_number})
             elif label_url:

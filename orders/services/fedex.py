@@ -19,75 +19,105 @@ def get_fedex_access_token():
     return response.json()["access_token"]
 
 
-def create_fedex_shipment(shipment_type, service, declared_value, pickup_time, total_weight, length, width, height):
+def create_fedex_shipment(shipment_type, service, declared_value, pickup_time, total_weight, length, width, height, shipping_address):
+    from datetime import datetime, timedelta
+    
+    # Format pickup_time to FedEx expected format (YYYY-MM-DDTHH:MM:SS)
+    if isinstance(pickup_time, str):
+        try:
+            # Parse datetime-local format and format for FedEx
+            dt = datetime.fromisoformat(pickup_time.replace('Z', '').replace('T', ' '))
+            pickup_time = dt.strftime('%Y-%m-%dT%H:%M:%S')
+        except:
+            # Fallback to tomorrow at 10 AM if parsing fails
+            dt = datetime.now() + timedelta(days=1)
+            pickup_time = dt.replace(hour=10, minute=0, second=0).strftime('%Y-%m-%dT%H:%M:%S')
+    
     access_token = get_fedex_access_token()
     headers = {
         "Authorization": f"Bearer {access_token}",
         "Content-Type": "application/json",
     }
+    # FedEx Sandbox standard payload
     payload = {
-        "accountNumber": {"value": settings.FEDEX_ACCOUNT_NUMBER},
+        "accountNumber": {
+            "value": settings.FEDEX_ACCOUNT_NUMBER
+        },
         "requestedShipment": {
             "shipper": {
                 "contact": {
-                    "personName": "Your Real Name",
-                    "phoneNumber": "Your Real Phone"
+                    "personName": "Shipper Name",
+                    "phoneNumber": "1234567890"
                 },
                 "address": {
-                    "streetLines": ["Your Real Address"],
-                    "city": "Your City",
-                    "stateOrProvinceCode": "Your State",
-                    "postalCode": "Your Postal",
+                    "streetLines": ["10 FedEx Parkway"],
+                    "city": "Collierville",
+                    "stateOrProvinceCode": "TN",
+                    "postalCode": "38017",
                     "countryCode": "US"
                 }
             },
-            "recipient": {
-                "contact": {
-                    "personName": "Recipient Name",
-                    "phoneNumber": "Recipient Phone"
-                },
-                "address": {
-                    "streetLines": ["Recipient Address"],
-                    "city": "Recipient City",
-                    "stateOrProvinceCode": "Recipient State",
-                    "postalCode": "Recipient Postal",
-                    "countryCode": "US"
+            "recipients": [
+                {
+                    "contact": {
+                        "personName": "Recipient Name",
+                        "phoneNumber": "1234567890"
+                    },
+                    "address": {
+                        "streetLines": ["13450 Farmcrest Ct"],
+                        "city": "Herndon",
+                        "stateOrProvinceCode": "VA",
+                        "postalCode": "20171",
+                        "countryCode": "US"
+                    }
                 }
-            },
-            "pickupType": shipment_type,
-            "serviceType": service,
-            "packagingType": "FEDEX_BOX",
-            "paymentType": "SENDER",
+            ],
+            "pickupType": "USE_SCHEDULED_PICKUP",
+            "serviceType": "FEDEX_GROUND",
+            "packagingType": "YOUR_PACKAGING",
             "shippingChargesPayment": {
                 "paymentType": "SENDER",
                 "payor": {
                     "responsibleParty": {
-                        "accountNumber": {"value": settings.FEDEX_ACCOUNT_NUMBER},
-                        "countryCode": "US"
+                        "accountNumber": {
+                            "value": settings.FEDEX_ACCOUNT_NUMBER
+                        }
                     }
                 }
             },
             "labelSpecification": {
-                "labelFormatType": "COMMON2D",
                 "imageType": "PDF",
                 "labelStockType": "PAPER_4X6"
             },
-            "rateRequestType": ["ACCOUNT"],
-            "totalWeight": {"units": "KG", "value": float(total_weight)},
-            "shipTimestamp": pickup_time,
             "requestedPackageLineItems": [
                 {
-                    "weight": {"units": "KG", "value": float(total_weight)},
+                    "weight": {
+                        "units": "LB",
+                        "value": 1.0
+                    },
                     "dimensions": {
-                        "length": int(length),
-                        "width": int(width),
-                        "height": int(height),
-                        "units": "CM"
+                        "length": 10,
+                        "width": 10,
+                        "height": 3,
+                        "units": "IN"
                     }
                 }
             ]
         }
     }
-    response = requests.post(FEDEX_SHIPMENT_URL, headers=headers, json=payload)
-    response.raise_for_status()
-    return response.json() 
+    try:
+        print(f"Sending FedEx payload: {json.dumps(payload, indent=2)}")
+        response = requests.post(FEDEX_SHIPMENT_URL, headers=headers, json=payload)
+        print(f"FedEx Response Status: {response.status_code}")
+        print(f"FedEx Response: {response.text}")
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.HTTPError as e:
+        # Log the error details for debugging
+        error_details = {
+            'status_code': response.status_code,
+            'response_text': response.text,
+            'payload_sent': payload
+        }
+        print(f"FedEx API Error: {error_details}")
+        raise Exception(f"FedEx API Error {response.status_code}: {response.text}") 

@@ -14,10 +14,7 @@ urlpatterns = [
     path('edit/<int:product_id>/', views.edit_product, name='edit_product'),
     path('delete/<int:product_id>/', views.delete_product, name='delete_product'),
     path('search/', views.search_plants, name='search'),
-    path('<slug:slug>/', views.product_detail, name='product_detail'),  # <-- This should be last!
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) \
-    + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
-urlpatterns += [
     path('product/<int:product_id>/print_label/', views.print_label, name='print_label'),
+    # Slug pattern MUST be last to avoid conflicts
+    path('<slug:slug>/', views.product_detail, name='product_detail'),
 ]
